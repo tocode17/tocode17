@@ -60,8 +60,8 @@ document.getElementById('sendButton').addEventListener('click', function () {
 
     for (let i = 1; i <= numQuickReplies; i++) {
         const time = document.getElementById(`quickReply${i}`).value.trim(); // Use trim to remove whitespace
-
         const text = timeAMPMformat(time);
+        console.log('time selected '+);
         if (text) {
             quickReplies.push({ title: text, payload: `quick_reply_${i}` });
         } else {
@@ -585,6 +585,7 @@ function formatReadableDate(dateStr) {
     // Format the date as "Tue Oct 29 09:00 am"
    // return `${dayOfWeek} ${month} ${day} ${hours}:${minutes} ${ampm}`;
    // Example: Tuesday, November 5 at 12:11pm 
+   console.log("Formated date :" + `${dayOfWeek} ${month} ${day} at ${hours}:${minutes} ${ampm}`);
     return `${dayOfWeek} ${month} ${day} at ${hours}:${minutes} ${ampm}`;
 }
 // function formatDateForICS(dateStr) {
