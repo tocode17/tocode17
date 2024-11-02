@@ -130,8 +130,7 @@ if (preferredDateInput) {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         // Format the date as "Day, Month Day" (e.g., "Thursday, September 4")
-       // var formattedDate = `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${day}`;
-       var formattedDate = preferredDateInput;
+        var formattedDate = `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${day}`;
 
         console.log("formattedDate :" + formattedDate); // Example: "Thursday, September 4"
     } else {
@@ -142,7 +141,8 @@ if (preferredDateInput) {
 }
 	if (numQuickReplies == "1") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            var quickReply1 = document.getElementById('quickReply1').value;
+            //var quickReply1 = document.getElementById('quickReply1').value;
+            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
             var data = {
