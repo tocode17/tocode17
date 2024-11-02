@@ -60,7 +60,7 @@ document.getElementById('sendButton').addEventListener('click', function () {
 
     for (let i = 1; i <= numQuickReplies; i++) {
         const time = document.getElementById(`quickReply${i}`).value.trim(); // Use trim to remove whitespace
-        const text = timeAMPMformat(time);
+        var text = timeAMPMformat(time);
         console.log('time selected '+text);
         if (text) {
             quickReplies.push({ title: text, payload: `quick_reply_${i}` });
@@ -141,8 +141,8 @@ if (preferredDateInput) {
 }
 	if (numQuickReplies == "1") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            //var quickReply1 = document.getElementById('quickReply1').value;
-            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+            var quickReply1 = document.getElementById('quickReply1').value;
+            //var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
             var data = {
