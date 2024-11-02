@@ -61,7 +61,7 @@ document.getElementById('sendButton').addEventListener('click', function () {
     for (let i = 1; i <= numQuickReplies; i++) {
         const time = document.getElementById(`quickReply${i}`).value.trim(); // Use trim to remove whitespace
         const text = timeAMPMformat(time);
-        console.log('time selected '+time);
+        console.log('time selected '+text);
         if (text) {
             quickReplies.push({ title: text, payload: `quick_reply_${i}` });
         } else {
