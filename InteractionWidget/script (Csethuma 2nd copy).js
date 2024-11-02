@@ -59,9 +59,7 @@ document.getElementById('sendButton').addEventListener('click', function () {
     const quickReplies = [];
 
     for (let i = 1; i <= numQuickReplies; i++) {
-        const time = document.getElementById(`quickReply${i}`).value.trim(); // Use trim to remove whitespace
-
-        const text = timeAMPMformat(time);
+        const text = document.getElementById(`quickReply${i}`).value.trim(); // Use trim to remove whitespace
         if (text) {
             quickReplies.push({ title: text, payload: `quick_reply_${i}` });
         } else {
@@ -81,26 +79,6 @@ document.getElementById('sendButton').addEventListener('click', function () {
 
 });
 
-function timeAMPMformat(time){
-  var ampm="am";
-  var [hours,minutes] = time.split(':');
- // Convert hours to 12-hour format and set am/pm
-     if (hours >= 12) {
-         ampm = "pm";
-         if (hours > 12) {
-             hours -= 12;
-         }
-     } else if (hours === 0) {
-         hours = 12;
-     }
- minutes=minutes.split(" ")[0];
-     // Ensure minutes are in two-digit format
-    // minutes = minutes < 10 ? "0" + minutes : minutes;
-
-     // Format the date as "Tue Oct 29 09:00 am"
-     return `${hours}:${minutes} ${ampm}`;
-}
-
 function sendQuickReplies(quickReplies) {
       var notifyWhenDone = function (err) {
             if (err) {
@@ -113,7 +91,7 @@ function sendQuickReplies(quickReplies) {
         console.log("Number of Quick replies selected=" + numQuickReplies);
         
 	const preferredDateInput = document.getElementById('preferredDate').value;
-    //console.log("preferredDateInput : " + preferredDateInput);
+    console.log("preferred DateInput : " + preferredDateInput);
 
 if (preferredDateInput) {
     // Split the date input assuming it's in the format "yyyy-mm-dd"
@@ -130,8 +108,7 @@ if (preferredDateInput) {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
         // Format the date as "Day, Month Day" (e.g., "Thursday, September 4")
-       // var formattedDate = `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${day}`;
-       var formattedDate = preferredDateInput;
+        var formattedDate = `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${day}`;
 
         console.log("formattedDate :" + formattedDate); // Example: "Thursday, September 4"
     } else {
@@ -583,9 +560,7 @@ function formatReadableDate(dateStr) {
     minutes = minutes < 10 ? "0" + minutes : minutes;
 
     // Format the date as "Tue Oct 29 09:00 am"
-   // return `${dayOfWeek} ${month} ${day} ${hours}:${minutes} ${ampm}`;
-   // Example: Tuesday, November 5 at 12:11pm 
-    return `${dayOfWeek} ${month} ${day} at ${hours}:${minutes} ${ampm}`;
+    return `${dayOfWeek} ${month} ${day} ${hours}:${minutes} ${ampm}`;
 }
 // function formatDateForICS(dateStr) {
 //     const date = new Date(dateStr);
