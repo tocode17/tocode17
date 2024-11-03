@@ -141,8 +141,8 @@ if (preferredDateInput) {
 }
 	if (numQuickReplies == "1") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            var quickReply1 = document.getElementById('quickReply1').value;
-            //var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+            //var quickReply1 = document.getElementById('quickReply1').value;
+            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
             var data = {
