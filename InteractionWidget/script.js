@@ -63,7 +63,8 @@ document.getElementById('sendButton').addEventListener('click', function () {
         var text = timeAMPMformat(time);
         console.log('time selected '+text);
         if (text) {
-            quickReplies.push({ title: text, payload: `quick_reply_${i}` });
+            //quickReplies.push({ title: text, payload: `quick_reply_${i}` });
+            quickReplies.push({ title: text, payload: text});
         } else {
             alert(`Please enter a value for Quick Reply ${i}.`); // Alert the user for blank input
             return; // Exit the function to prevent sending empty replies
