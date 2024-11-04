@@ -40,15 +40,11 @@ document.getElementById('generateButton').addEventListener('click', function () 
         quickRepliesContainer.appendChild(label);
 
         const input = document.createElement('input');
-	//const input = document.createElement('input');
+	
         input.type = 'time';
         input.id = `quickReply${i}`;
         quickRepliesContainer.appendChild(input);
 	    
-        // input.type = 'text';
-        // input.id = `quickReply${i}`;
-        // input.placeholder = `Enter Option ${i}`;
-        // quickRepliesContainer.appendChild(input);
     }
 	
     document.getElementById('sendButton').style.display = 'block';
@@ -175,8 +171,6 @@ if (preferredDateInput) {
 	    
         if (numQuickReplies == "2") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-           // var quickReply1 = document.getElementById('quickReply1').value;
-           // var quickReply2 = document.getElementById('quickReply2').value;
            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
            var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
             var text1=`Please select your preferred time slot for ${formattedDate}`
@@ -222,9 +216,10 @@ if (preferredDateInput) {
 
         if (numQuickReplies == "3") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            var quickReply1 = document.getElementById('quickReply1').value;
-            var quickReply2 = document.getElementById('quickReply2').value;
-            var quickReply3 = document.getElementById('quickReply3').value;
+            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+            var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+            var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+           
 
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
@@ -281,10 +276,10 @@ if (preferredDateInput) {
 
         if (numQuickReplies == "4") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            var quickReply1 = document.getElementById('quickReply1').value;
-            var quickReply2 = document.getElementById('quickReply2').value;
-            var quickReply3 = document.getElementById('quickReply3').value;
-            var quickReply4 = document.getElementById('quickReply4').value;
+            var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+            var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+            var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+            var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
 
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
@@ -355,11 +350,11 @@ if (preferredDateInput) {
 
         if (numQuickReplies == "5") {
             var cmdName = lpTag.agentSDK.cmdNames.writeSC;
-            var quickReply1 = document.getElementById('quickReply1').value;
-            var quickReply2 = document.getElementById('quickReply2').value;
-            var quickReply3 = document.getElementById('quickReply3').value;
-            var quickReply4 = document.getElementById('quickReply4').value;
-            var quickReply5 = document.getElementById('quickReply5').value;
+           var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+           var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+           var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+           var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+           var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
 
             var text1=`Please select your preferred time slot for ${formattedDate}`
 
@@ -438,7 +433,632 @@ if (preferredDateInput) {
         };
             lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
         }
-	    
+	   
+        if (numQuickReplies == "6") {
+          var cmdName = lpTag.agentSDK.cmdNames.writeSC;
+         var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+         var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+         var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+         var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+         var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
+         var quickReply6 = timeAMPMformat(document.getElementById('quickReply6').value);
+
+          var text1=`Please select your preferred time slot for ${formattedDate}`
+
+          var data = {
+              json:{
+                  "type": "vertical",
+                  "tag": "generic",
+                  "elements": [{
+                      "type": "text",
+                      "text": text1,
+                      "tag": "title"
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply1,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply1} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply2,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply2} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply3,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply3} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply4,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply4} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply5,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply5} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "button",
+                      "title": quickReply6,
+                      "click": {
+                        "actions": [
+                          {
+                            "type": "publishText",
+                            "text": `${quickReply6} ${formattedDate}`
+                          }
+                        ]
+                      }
+                    }
+
+                  ]
+          }
+      };
+          lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
+      }
+
+      if (numQuickReplies == "7") {
+        var cmdName = lpTag.agentSDK.cmdNames.writeSC;
+       var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+       var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+       var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+       var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+       var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
+       var quickReply6 = timeAMPMformat(document.getElementById('quickReply5').value);
+       var quickReply7 = timeAMPMformat(document.getElementById('quickReply7').value);
+
+        var text1=`Please select your preferred time slot for ${formattedDate}`
+
+        var data = {
+            json:{
+                "type": "vertical",
+                "tag": "generic",
+                "elements": [{
+                    "type": "text",
+                    "text": text1,
+                    "tag": "title"
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply1,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply1} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply2,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply2} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply3,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply3} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply4,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply4} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply5,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply5} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply6,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply6} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "title": quickReply7,
+                    "click": {
+                      "actions": [
+                        {
+                          "type": "publishText",
+                          "text": `${quickReply7} ${formattedDate}`
+                        }
+                      ]
+                    }
+                  }
+
+                ]
+        }
+    };
+        lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
+    }
+
+    if (numQuickReplies == "8") {
+      var cmdName = lpTag.agentSDK.cmdNames.writeSC;
+     var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+     var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+     var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+     var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+     var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
+     var quickReply6 = timeAMPMformat(document.getElementById('quickReply6').value);
+     var quickReply7 = timeAMPMformat(document.getElementById('quickReply7').value);
+     var quickReply8 = timeAMPMformat(document.getElementById('quickReply8').value);
+
+      var text1=`Please select your preferred time slot for ${formattedDate}`
+
+      var data = {
+          json:{
+              "type": "vertical",
+              "tag": "generic",
+              "elements": [{
+                  "type": "text",
+                  "text": text1,
+                  "tag": "title"
+                },
+                {
+                  "type": "button",
+                  "title": quickReply1,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply1} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply2,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply2} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply3,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply3} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply4,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply4} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },                
+                {
+                  "type": "button",
+                  "title": quickReply5,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply5} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply6,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply6} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply7,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply7} ${formattedDate}`
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "button",
+                  "title": quickReply8,
+                  "click": {
+                    "actions": [
+                      {
+                        "type": "publishText",
+                        "text": `${quickReply8} ${formattedDate}`
+                      }
+                    ]
+                  }
+                }
+
+              ]
+      }
+  };
+      lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
+  }
+  
+  if (numQuickReplies == "9") {
+    var cmdName = lpTag.agentSDK.cmdNames.writeSC;
+   var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+   var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+   var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+   var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+   var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
+   var quickReply6 = timeAMPMformat(document.getElementById('quickReply6').value);
+   var quickReply7 = timeAMPMformat(document.getElementById('quickReply7').value);
+   var quickReply8 = timeAMPMformat(document.getElementById('quickReply8').value);
+   var quickReply9 = timeAMPMformat(document.getElementById('quickReply9').value);
+
+    var text1=`Please select your preferred time slot for ${formattedDate}`
+
+    var data = {
+        json:{
+            "type": "vertical",
+            "tag": "generic",
+            "elements": [{
+                "type": "text",
+                "text": text1,
+                "tag": "title"
+              },
+              {
+                "type": "button",
+                "title": quickReply1,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply1} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply2,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply2} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply3,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply3} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply4,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply4} ${formattedDate}`
+                    }
+                  ]
+                }
+              },                
+              {
+                "type": "button",
+                "title": quickReply5,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply5} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply6,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply6} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply7,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply7} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply8,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply8} ${formattedDate}`
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "button",
+                "title": quickReply9,
+                "click": {
+                  "actions": [
+                    {
+                      "type": "publishText",
+                      "text": `${quickReply9} ${formattedDate}`
+                    }
+                  ]
+                }
+              }
+
+            ]
+    }
+};
+    lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
+}
+
+if (numQuickReplies == "10") {
+  var cmdName = lpTag.agentSDK.cmdNames.writeSC;
+ var quickReply1 = timeAMPMformat(document.getElementById('quickReply1').value);
+ var quickReply2 = timeAMPMformat(document.getElementById('quickReply2').value);
+ var quickReply3 = timeAMPMformat(document.getElementById('quickReply3').value);
+ var quickReply4 = timeAMPMformat(document.getElementById('quickReply4').value);
+ var quickReply5 = timeAMPMformat(document.getElementById('quickReply5').value);
+ var quickReply6 = timeAMPMformat(document.getElementById('quickReply6').value);
+ var quickReply7 = timeAMPMformat(document.getElementById('quickReply7').value);
+ var quickReply8 = timeAMPMformat(document.getElementById('quickReply8').value);
+ var quickReply9 = timeAMPMformat(document.getElementById('quickReply9').value);
+ var quickReply10 = timeAMPMformat(document.getElementById('quickReply10').value);
+
+  var text1=`Please select your preferred time slot for ${formattedDate}`
+
+  var data = {
+      json:{
+          "type": "vertical",
+          "tag": "generic",
+          "elements": [{
+              "type": "text",
+              "text": text1,
+              "tag": "title"
+            },
+            {
+              "type": "button",
+              "title": quickReply1,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply1} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply2,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply2} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply3,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply3} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply4,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply4} ${formattedDate}`
+                  }
+                ]
+              }
+            },                
+            {
+              "type": "button",
+              "title": quickReply5,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply5} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply6,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply6} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply7,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply7} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply8,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply8} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply9,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply9} ${formattedDate}`
+                  }
+                ]
+              }
+            },
+            {
+              "type": "button",
+              "title": quickReply10,
+              "click": {
+                "actions": [
+                  {
+                    "type": "publishText",
+                    "text": `${quickReply10} ${formattedDate}`
+                  }
+                ]
+              }
+            }
+
+          ]
+  }
+};
+  lpTag.agentSDK.command(cmdName, data, notifyWhenDone);
+}
+
 // Send Add to Calendar Button
 document.getElementById('sendAddToCalendarButton').addEventListener('click', function () {
     const eventLocation = document.getElementById('eventLocation').value.trim();
