@@ -1135,7 +1135,7 @@ END:VCALENDAR
                             "uri": googleCalendarUrl
                         }]
                     }
-                },
+                }/*,
                 {
                     "type": "button",
                     "title": "Add to Apple Calendar",
@@ -1145,7 +1145,7 @@ END:VCALENDAR
                             "uri": appleCalendarUrl
                         }]
                     }
-                }
+                } */
             ]
         }
     };
