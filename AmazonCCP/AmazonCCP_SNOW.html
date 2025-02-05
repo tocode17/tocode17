@@ -24,7 +24,26 @@
 		<script>
 		window.addEventListener("message", function (event) {
 		    //alert("Received message in widget:", event.data);
-			//console.log("Received message in widget:", event.data);
+			console.log("Received message in widget:", event.data);
+			if(event.type.includes("liveperson")){
+				console.log("Received message from LivePerson:", event.data);
+			}
+			/*
+			try{
+				connect.agent((agent) => {
+						const states = agent.getAgentStates();    
+						const availableState = states.find(state => state.name === "Busy");
+								if (availableState) {
+										agent.setState(availableState, {
+											success: () => console.log("Optum: Agent state updated to Available: ",states),
+								failure: (error) => console.error("Optum: Failed to update state:", error)
+								});
+							}
+						});
+			}catch(ex){
+				console.error("Error occured at event Listener: ",ex);
+			}
+			*/
 		});
 		
 			function init() {
@@ -59,17 +78,6 @@
 						window.open(baseURL + "caller_id=77ad8176731313005754660c4cf6a7de^short_description=Password Reset^description=I want to reset my laptop password",'_blank')
 						
 						console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: "+ screenpopURL);
-						connect.agent((agent) => {
-						const states = agent.getAgentStates();    
-						const availableState = states.find(state => state.name === "After Call Work");
-								if (availableState) {
-										agent.setState(availableState, {
-											success: () => console.log("Optum: Agent state updated to Available: ",states),
-								failure: (error) => console.error("Optum: Failed to update state:", error)
-								});
-							}
-						});
-
 					});
 				});
 			};
