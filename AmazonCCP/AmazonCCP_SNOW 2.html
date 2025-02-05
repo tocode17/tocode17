@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<title>Amazon Connect CCP with ServiceNow Screenpop</title>
+        <meta charset="UTF-8">
+		<!-- <script src="amazon-connect.min.js"></script> -->
+		<script src="connect-streams.min.js"></script>
+        <style>
+            *, body {
+                margin: 0;
+                padding:0
+            }
+            iframe {
+                border: 0px
+            }
+            #container-div {
+                width: 400px;
+                height: 600px
+            }
+        </style>
+	</head>
+	<body onload="init()">
+  	<div id="container-div"></div>
+		<script>
+		window.addEventListener("message", function (event) {
+		    //alert("Received message in widget:", event.data);
+			console.log("Received message in widget:", event.data);
+			if(event.type.includes("liveperson"){
+				console.log("Received message from LivePerson:", event.data);
+			}
+			/*
+			try{
+				connect.agent((agent) => {
+						const states = agent.getAgentStates();    
+						const availableState = states.find(state => state.name === "Busy");
+								if (availableState) {
+										agent.setState(availableState, {
+											success: () => console.log("Optum: Agent state updated to Available: ",states),
+								failure: (error) => console.error("Optum: Failed to update state:", error)
+								});
+							}
+						});
+			}catch(ex){
+				console.error("Error occured at event Listener: ",ex);
+			}
+			*/
+		});
+		
+			function init() {
+				var instanceBase = "https://ccaa-aws-connect-sandbox.my.connect.aws";
+				var instanceURL = instanceBase + "/ccp-v2/";
+				var instanceLogin = instanceBase + "/login";
+
+				var containerDiv = document.getElementById("container-div");
+
+				connect.core.initCCP(containerDiv, {
+					ccpUrl: instanceURL,
+					loginPopup: true,
+					loginPopupAutoClose: true,
+					loginUrl: instanceLogin,
+					softphone: {
+						allowFramedSoftphone: true
+					}
+				});
+				connect.contact(function(contact) {
+					//contact.onConnecting
+					contact.onConnected(function(contact) {
+					console.log("Optum: Recevied onConnected from Amazon connect, Data: ", JSON.stringify(contact));
+						var attributeMap = contact.getAttributes();
+						
+						var baseURL = "https://dev240867.service-now.com/incident.do?sys_id=-1&sysparm_query=";
+						
+						//var searchString = attributeMap.screenPopValue.value;
+						
+						//var screenpopURL = baseURL + searchString +"/view";
+						
+						//window.open(screenpopURL)
+						window.open(baseURL + "caller_id=77ad8176731313005754660c4cf6a7de^short_description=Password Reset^description=I want to reset my laptop password",'_blank')
+						
+						console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: "+ screenpopURL);
+					});
+				});
+			};
+		</script>
+	</body>
+</html>
