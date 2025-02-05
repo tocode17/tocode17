@@ -60,10 +60,14 @@
 						
 						console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: "+ screenpopURL);
 						connect.agent((agent) => {
-							agent.setState(connect.AgentState.AVAILABLE, {
-								success: () => console.log("Agent state changed successfully"),
-								failure: (error) => console.error("Failed to change agent state", error)
-							});
+						const states = agent.getAgentStates();    
+						const availableState = states.find(state => state.name === "After Call Work");
+								if (availableState) {
+										agent.setState(availableState, {
+											success: () => console.log("Optum: Agent state updated to Available: ",states),
+								failure: (error) => console.error("Optum: Failed to update state:", error)
+								});
+							}
 						});
 
 					});
