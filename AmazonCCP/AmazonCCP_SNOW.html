@@ -28,6 +28,23 @@
 			if(event.type.includes("liveperson")){
 				console.log("Received message from LivePerson:", event.data);
 			}
+
+			var parentCast = new BroadcastChannel("optumChannel");
+
+	parentCast.onmessage = (event) => {
+
+	  if(event.data){
+
+		  console.info("Received parsed ixn data: ",event.data);
+
+		  wweEventHandler(event.data);
+
+		 // window.parent.parent.container.innerHTML = event.data;
+
+		}
+
+};
+ 
 			/*
 			try{
 				connect.agent((agent) => {
