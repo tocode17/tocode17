@@ -19,9 +19,11 @@
         // Subscribe to Agent Conversations
         function subscribeToAgentConversations() {
             const agentSDK = lpTag.agentSDK;
- 
+			
+			agentSDK.init({});
+
             // Subscribe to real-time conversation updates
-            agentSDK.subscribe(
+            agentSDK.bind(
                 {
                     type: 'routing.agentUserSession',
                     skillId: '*', // Subscribe to all skills (use specific IDs if needed)
