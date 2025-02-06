@@ -11,6 +11,8 @@
                 padding:0
             }
             iframe {
+            width: 400px;
+                height: 500px;
                 border: 0px
             }
             #container-div {
@@ -20,30 +22,28 @@
         </style>
 	</head>
 	<body onload="init()">
-  	<div id="container-div"></div>
+  	<iframe id="servicenowFrame" name="ServiceNow" src="https://ccaa-aws-connect-sandbox.my.connect.aws"></iframe>
 		<script>
 		window.addEventListener("message", function (event) {
-		    //alert("Received message in widget:", event.data);
-			console.log("Received message in widget:", event.data);
+			//console.log("Received message in widget:", event.data);
 			if(event.type.includes("liveperson")){
 				console.log("Received message from LivePerson:", event.data);
 			}
 
 			var parentCast = new BroadcastChannel("optumChannel");
 
-	parentCast.onmessage = (event) => {
+				parentCast.onmessage = (event) => {
 
-	  if(event.data){
+	  					   if(event.data){
 
-		  console.info("Received parsed ixn data: ",event.data);
-
-		  wweEventHandler(event.data);
-
-		 // window.parent.parent.container.innerHTML = event.data;
-
-		}
-
-};
+							  console.info("Received parsed ixn data: ",event.data);
+					
+							  wweEventHandler(event.data);
+					
+							 // window.parent.parent.container.innerHTML = event.data;
+					
+							}
+			};
  
 			/*
 			try{
@@ -68,7 +68,7 @@
 				var instanceURL = instanceBase + "/ccp-v2/";
 				var instanceLogin = instanceBase + "/login";
 
-				var containerDiv = document.getElementById("container-div");
+				var containerDiv = document.getElementById("servicenowFrame");
 
 				connect.core.initCCP(containerDiv, {
 					ccpUrl: instanceURL,
