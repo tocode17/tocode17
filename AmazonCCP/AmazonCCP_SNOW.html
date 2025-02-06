@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
 		<!-- <script src="amazon-connect.min.js"></script> -->
 		<script src="connect-streams.min.js"></script>
+		<script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js" type="text/javascript"></script>
         <style>
             *, body {
                 margin: 0;
@@ -79,6 +80,11 @@
 						allowFramedSoftphone: true
 					}
 				});
+				
+				lpTag.agentSDK.init({}); //LP
+
+				lpTag.agentSDK.bind('agentInfo.employeeId', updateSDE, notifyWhenSDEDone);
+
 				connect.contact(function(contact) {
 					//contact.onConnecting
 					contact.onConnected(function(contact) {
@@ -97,6 +103,11 @@
 						console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: "+ screenpopURL);
 					});
 				});
+
+				var updateSDE = function(data)
+								{
+									alert("Response from LP agent");
+								};
 			};
 		</script>
 	</body>
