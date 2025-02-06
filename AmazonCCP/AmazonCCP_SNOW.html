@@ -18,25 +18,50 @@
  
         // Subscribe to Agent Conversations
         function subscribeToAgentConversations() {
-            const agentSDK = lpTag.agentSDK;
-			
-			agentSDK.init({});
 
-            // Subscribe to real-time conversation updates
-            agentSDK.bind(
-                {
-                    type: 'routing.agentUserSession',
-                    skillId: '*', // Subscribe to all skills (use specific IDs if needed)
-                },
-                (data) => {
-                    console.log("Conversation Data:", data);
-                    document.getElementById("conversation").innerText = JSON.stringify(data, null, 2);
-                },
-                (error) => {
-                    console.error("Subscription Error:", error);
-                }
-            );
-        }
+        //     const agentSDK = lpTag.agentSDK;
+			
+		// 	agentSDK.init({});
+
+        //     // Subscribe to real-time conversation updates
+        //     agentSDK.bind(
+        //         {
+        //             type: 'routing.agentUserSession',
+        //             skillId: '*', // Subscribe to all skills (use specific IDs if needed)
+        //         },
+        //         (data) => {
+        //             console.log("Conversation Data:", data);
+        //             document.getElementById("conversation").innerText = JSON.stringify(data, null, 2);
+        //         },
+        //         (error) => {
+        //             console.error("Subscription Error:", error);
+        //         }
+        //     );
+        
+				const WebSocket = require('ws');
+				const ws = new WebSocket('wss://z1.le.liveperson.net/ws/api/account/48507146/messaging/consumer?v=3');
+				
+				ws.on('open', function open() {
+				const subscribeMessage = {
+					kind: 'req',
+					id: '1',
+					type: 'subscribe',
+					body: {
+					dialogId: '12345',
+					endpoint: 'routing.agentUserSession'
+					}
+				};
+				ws.send(JSON.stringify(subscribeMessage));
+				});
+				
+				ws.on('message', function incoming(data) {
+				console.log('Received:', data);
+				});
+				
+				ws.on('error', function error(err) {
+				console.error('WebSocket error:', err);
+				});
+	}
  
         // Initialize and subscribe
         document.addEventListener("DOMContentLoaded", function() {
