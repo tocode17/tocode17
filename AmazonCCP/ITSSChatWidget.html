@@ -210,8 +210,6 @@
     		  ENT_Segment: 'OptumTech',
     		  ENT_Function: 'ITSS',
     		  ENT_SubFunction : 'ITSDOps',
-    		  ENT_MediaClassNm : 'async-chat',
-    		  description: 'I want to reset my password'
     	};
 
       function addMbrInfo() {
@@ -241,14 +239,14 @@
 					  amazon_connect('styles', { iconType: 'CHAT', openChat: { color: '#ffffff', backgroundColor: '#077df2' }, closeChat: { color: '#ffffff', backgroundColor: '#077df2'} });
 					  amazon_connect('snippetId', 'QVFJREFIaWFZYXRVSlpIekdkUUg5YXhZenVQMktKRXNIWTVFQWpBYVErTEdzRnpvZHdGanRSRTErZ3FFVmlseGMwVVBEMHNJQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNWlAweUZ1QjVCNko2TzF3V0FnRVFnQ3ZkYkgzMmRaTW54eTRpVmZRdnE1NFBqUWlYenR1eW02TzViemdiVjhUejRCbzVmcnZjZGNZTWhTTzM6Ok1kbjVvSExjUEhnalRRaEpMSzY5ME1IWjQzWHQreGpObjRHMFRUSFdITjQrU2NDQi9SWUxWZmFkMEJCbTl0UTlOR3F2dlVON3pkZ3Y4VnA3djFmZE02ZG1abUlUdkxnemlvendzUDFRckJtYmNQUUNzcGtIcExaeVZBdjIvNXAyT3FkNEl4TjBWOWlYRGFHVkdCTFFNNHpXNkp0aTlFVT0=');
 					  amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
-					  
+
 					  amazon_connect('customStyles', {
 							global: {
 							 frameWidth: '500px',
-							 frameHeight: '700px',
+							 frameHeight: '800px',
 							 textColor: '#000000',
-							 fontSize: '15px',
-							 footerHeight: '80px',
+							 fontSize: '13px',
+							 footerHeight: '50px',
 							 typeface: 'Times New Roman', 
 						}
 					 })
@@ -262,6 +260,7 @@
       	        		});
       	        	  
       	        	  amazon_connect('contactAttributes', memberInfo);
+      	        	  //amazon_connect('initialMessage', 'help');
       	        	// Amazon Changes End	
       	  }else{
         	  alert("Please update required Amazon Custom Attributes");
