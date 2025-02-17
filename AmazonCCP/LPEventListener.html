@@ -9,14 +9,19 @@
     function initSDK(){
         try {
             lpTag.agentSDK.init({});
-
+            const currentAgentID ='None';
             //Event Receiver
             var lpEventReceiver = function(data)
                 {
                     //const path = data.key;
                     //const value = data.newValue;
                     console.log("lpEventReceiver: " + JSON.stringify(data));
-                    MapUrlParam();
+                    currentAgentID = getURLParam();
+                    if (currentAgentID =='None') {
+                        alert("currentAgentID: ",currentAgentID)
+                    } else {
+                        alert("currentAgentID: ",currentAgentID)
+                    }
                 }
             
             //Error Handler
@@ -34,19 +39,12 @@
             console.error("Error at initSDK: ", error);
         }
     }
+
+async function getURLParam() {
+    const params = new URLSearchParams(window.location.search);
     
-function MapUrlParam() {
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    console.log(sPageURL);
-    for (var i = 0; i < sURLVariables.length; i++) {
-        var sParameterName = sURLVariables[i].split('=');
-        console.log(sParameterName);
-        if (sParameterName[0] === urlParam) {
-            console.log(sParameterName[1]);
-            return sParameterName[1];
-        }
-    }
+    console.log("ENT_AgentID: ",currentAgentID);
+    return await params.get('ENT_AgentID');
 }
 </script>
 </body>
