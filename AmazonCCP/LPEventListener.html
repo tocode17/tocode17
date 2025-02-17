@@ -1,50 +1,68 @@
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+    <meta charset="UTF-8">
+    <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
 </head>
+
 <body onload="initSDK()">
-<h1>Test Widget</h1>
-<script>
-    function initSDK(){
-        try {
-            lpTag.agentSDK.init({});
-            const currentAgentID ='None';
-            //Event Receiver
-            var lpEventReceiver = function(data)
-                {
+    <h1>Test Widget</h1>
+    <script>
+
+        function changeAgentStatus(newStatus) {
+            try {
+                lpTag.agentSDK.command(
+                'agent.setStatus', {
+                    availability: newStatus
+                },
+                (data) => console.log('Status updated successfully:', data),
+                (err) => console.error('Error updating status:', err)
+            );
+            } catch (erro) {
+                console.error('Error at changeAgentStatus: ', erro);
+            }
+           
+        }
+
+        function initSDK() {
+            try {
+                lpTag.agentSDK.init({});
+                const currentAgentID = 'None';
+                //Event Receiver
+                var lpEventReceiver = function (data) {
                     //const path = data.key;
                     //const value = data.newValue;
-                    console.log("lpEventReceiver: " + JSON.stringify(data));
-                    currentAgentID = getURLParam();
-                    if (currentAgentID =='None') {
-                        alert("currentAgentID: ",currentAgentID)
+                    console.log("LP Event Receiver Data: " + JSON.stringify(data));
+                    const params = new URLSearchParams(window.location.search);
+                    console.log("ENT_AgentID: ", currentAgentID);
+                    currentAgentID = params.get('ENT_AgentID');
+                    if (currentAgentID == 'None') {
+                        alert("currentAgentID: ", currentAgentID);
                     } else {
-                        alert("currentAgentID: ",currentAgentID)
+                        console("currentAgentID: ", currentAgentID);
+                        changeAgentStatus('ONLINE');
                     }
                 }
-            
-            //Error Handler
-            var lpErrorHandler = function(err)
-                {
-                    if (err)
-                    {
-                        console.error("Error received at lpErrorHandler: ",err);
+
+                //Error Handler
+                var lpErrorHandler = function (err) {
+                    if (err) {
+                        console.error("Error received at lpErrorHandler: ", err);
                     }
                 };
 
-            lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-            lpTag.agentSDK.bind('agenInfo.employeeId', lpEventReceiver, lpErrorHandler);
-        } catch (error) {
-            console.error("Error at initSDK: ", error);
+                lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('agenInfo.employeeId', lpEventReceiver, lpErrorHandler);
+            } catch (error) {
+                console.error("Error at initSDK: ", error);
+            }
         }
-    }
 
-async function getURLParam() {
-    const params = new URLSearchParams(window.location.search);
-    
-    console.log("ENT_AgentID: ",currentAgentID);
-    return await params.get('ENT_AgentID');
-}
-</script>
+        async function getURLParam() {
+            const params = new URLSearchParams(window.location.search);
+
+            console.log("ENT_AgentID: ", currentAgentID);
+            return await params.get('ENT_AgentID');
+        }
+    </script>
 </body>
