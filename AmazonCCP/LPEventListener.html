@@ -13,7 +13,7 @@
         function getAgentSession() {
             lpTag.agentSDK.get(
                 'agentSession',
-                (data) => console.log('Agent Session Data:', data),
+                (data) => console.log('Agent Session Data:', JSON.stringify(data)),
                 (err) => console.error('Error retrieving session data:', err)
             );
         }
@@ -64,7 +64,8 @@
                 };
 
                 lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-                lpTag.agentSDK.bind('agenInfo.employeeId', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('agentInfo.sessionId', lpEventReceiver, lpErrorHandler);
             } catch (error) {
                 console.error("Error at initSDK: ", error);
             }
