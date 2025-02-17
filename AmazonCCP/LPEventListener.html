@@ -8,6 +8,19 @@
 <body onload="initSDK()">
     <h1>Test Widget</h1>
     <script>
+        function callLivePersonFunction() {
+            lpTag.agentSDK.command(
+                'liveperson.function.execute', {
+                    functionName: 'myAgentListener', // Replace with your function name
+                    parameters: {
+                        key1: 'Hello',
+                        key2: 'Vanakkam!!'
+                    } // Pass any required data
+                },
+                (data) => console.log('Function Response:', JSON.stringify(data)),
+                (err) => console.error('Error calling function:', err)
+            );
+        }
 
         // Function to get agent session details
         function getAgentSession() {
@@ -42,8 +55,9 @@
                     //const path = data.key;
                     //const value = data.newValue;
                     console.log("LP Event Receiver Data: " + JSON.stringify(data));
+                    callLivePersonFunction();
                     getAgentSession();
-                    //changeAgentStatus('ONLINE');
+                    changeAgentStatus('ONLINE');
                     var urlParams = decodeURIComponent(location.search);
                     const params = new URLSearchParams(urlParams);
                     currentAgentID = params.get('ENT_AgentID');
