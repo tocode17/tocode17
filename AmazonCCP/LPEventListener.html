@@ -9,19 +9,28 @@
     <h1>Test Widget</h1>
     <script>
 
+        // Function to get agent session details
+        function getAgentSession() {
+            lpTag.agentSDK.get(
+                'agentSession',
+                (data) => console.log('Agent Session Data:', data),
+                (err) => console.error('Error retrieving session data:', err)
+            );
+        }
+
         function changeAgentStatus(newStatus) {
             try {
                 lpTag.agentSDK.command(
-                'agent.setStatus', {
-                    availability: newStatus
-                },
-                (data) => console.log('Status updated successfully:', data),
-                (err) => console.error('Error updating status:', err)
-            );
+                    'agent.setStatus', {
+                        availability: newStatus
+                    },
+                    (data) => console.log('Status updated successfully:', data),
+                    (err) => console.error('Error updating status:', err)
+                );
             } catch (erro) {
                 console.error('Error at changeAgentStatus: ', erro);
             }
-           
+
         }
 
         function initSDK() {
@@ -33,15 +42,17 @@
                     //const path = data.key;
                     //const value = data.newValue;
                     console.log("LP Event Receiver Data: " + JSON.stringify(data));
-                    changeAgentStatus('ONLINE');
-                    const params = new URLSearchParams(window.location.search);
-                    console.log("ENT_AgentID: ", currentAgentID);
+                    getAgentSession();
+                    //changeAgentStatus('ONLINE');
+                    var urlParams = decodeURIComponent(location.search);
+                    const params = new URLSearchParams(urlParams);
                     currentAgentID = params.get('ENT_AgentID');
+                    console.log("ENT_AgentID: ", currentAgentID);
                     if (currentAgentID == 'None') {
-                        alert("currentAgentID: ", currentAgentID);
+                        alert("Current AgentID is: ", currentAgentID);
                     } else {
-                        console("currentAgentID: ", currentAgentID);
-                        changeAgentStatus('ONLINE');
+                        console("Current AgentID is: ", currentAgentID);
+                        //changeAgentStatus('ONLINE');
                     }
                 }
 
