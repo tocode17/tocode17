@@ -61,7 +61,7 @@
                     var urlParams = decodeURIComponent(location.search);
                     const params = new URLSearchParams(urlParams);
                     currentAgentID = params.get('ENT_AgentID');
-                    console.log("ENT_AgentID: ", currentAgentID);
+                    console.log("LP ENT_AgentID: ", currentAgentID);
                     if (currentAgentID == 'None') {
                         alert("Current AgentID is: ", currentAgentID);
                     } else {
@@ -84,12 +84,6 @@
                 console.error("Error at initSDK: ", error);
             }
         }
-
-        async function getURLParam() {
-            const params = new URLSearchParams(window.location.search);
-
-            console.log("ENT_AgentID: ", currentAgentID);
-            return await params.get('ENT_AgentID');
-        }
     </script>
 </body>
+</html>
