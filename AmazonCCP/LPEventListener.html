@@ -33,6 +33,7 @@
                     //const path = data.key;
                     //const value = data.newValue;
                     console.log("LP Event Receiver Data: " + JSON.stringify(data));
+                    changeAgentStatus('ONLINE');
                     const params = new URLSearchParams(window.location.search);
                     console.log("ENT_AgentID: ", currentAgentID);
                     currentAgentID = params.get('ENT_AgentID');
