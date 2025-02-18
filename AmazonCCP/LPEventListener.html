@@ -34,7 +34,7 @@
                         if (connect) {
                             connect.agent((agent) => {
                                 const states = agent.getAgentStates();
-                                const availableState = states.find(state => state.name === "Busy");
+                                const availableState = states.find(state => state.name === "After Call Work");
                                 if (availableState) {
                                     agent.setState(availableState, {
                                         success: () => console.log(
