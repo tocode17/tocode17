@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
     <script src="amazon-connect.min.js"></script>
+    <style>
+        *, body {
+            margin: 0;
+            padding:0
+        }
+        iframe {
+            border: 0px
+        }
+        #container-div {
+            width: 400px;
+            height: 600px
+        }
+    </style>
 </head>
 
 <body onload="initSDKs()">
-    <h1>Test Widget</h1>
+<div id="container-div"></div>
     <script>
         function initSDKs() {
             try {
@@ -69,7 +82,7 @@
                         allowFramedSoftphone: true
                     }
                 });
-                
+
                 connect.contact(function (contact) {
                     //contact.onConnecting
                     contact.onConnected(function (contact) {
