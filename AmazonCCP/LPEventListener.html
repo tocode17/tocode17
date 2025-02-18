@@ -3,74 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+    <script src="amazon-connect.min.js"></script>
 </head>
 
-<body onload="initSDK()">
+<body onload="initSDKs()">
     <h1>Test Widget</h1>
     <script>
-        function callLivePersonFunction() {
-            lpTag.agentSDK.command(
-                'liveperson.function.execute', {
-                    functionName: 'myagentListener', // Replace with your function name
-                    parameters: {
-                        key1: 'Hello',
-                        key2: 'Vanakkam!!'
-                    } // Pass any required data
-                },
-                (data) => console.log('Function Response:', JSON.stringify(data)),
-                (err) => console.error('Error calling function:', err)
-            );
-        }
-
-        // Function to get agent session details
-        function getAgentSession() {
-            lpTag.agentSDK.get(
-                'agentSession',
-                (data) => console.log('Agent Session Data:', JSON.stringify(data)),
-                (err) => console.error('Error retrieving session data:', err)
-            );
-        }
-
-        function changeAgentStatus(newStatus) {
-            try {
-                lpTag.agentSDK.command(
-                    'agent.setStatus', {
-                        availability: newStatus
-                    },
-                    (data) => console.log('Status updated successfully:', data),
-                    (err) => console.error('Error updating status:', err)
-                );
-            } catch (erro) {
-                console.error('Error at changeAgentStatus: ', erro);
-            }
-
-        }
-
-        function initSDK() {
+        function initSDKs() {
             try {
                 lpTag.agentSDK.init({});
                 const currentAgentID = 'None';
-                //Event Receiver
+                //LP Event Receiver
                 var lpEventReceiver = function (data) {
-                    //const path = data.key;
-                    //const value = data.newValue;
                     console.log("LP Event Receiver Data: " + JSON.stringify(data));
-                    callLivePersonFunction();
-                    getAgentSession();
-                    changeAgentStatus('ONLINE');
-                    var urlParams = decodeURIComponent(location.search);
-                    const params = new URLSearchParams(urlParams);
-                    currentAgentID = params.get('ENT_AgentID');
-                    console.log("LP ENT_AgentID: ", currentAgentID);
-                    if (currentAgentID == 'None') {
-                        alert("Current AgentID is: ", currentAgentID);
-                    } else {
-                        console("Current AgentID is: ", currentAgentID);
-                        //changeAgentStatus('ONLINE');
+                    const event = data.key;
+                    if (event === 'chatInfo.rtSessionId') {
+                        if (connect) {
+                            connect.agent((agent) => {
+                                const states = agent.getAgentStates();
+                                const availableState = states.find(state => state.name === "Busy");
+                                if (availableState) {
+                                    agent.setState(availableState, {
+                                        success: () => console.log(
+                                            "Optum: Agent state updated to Available: ", states
+                                        ),
+                                        failure: (error) => console.error(
+                                            "Optum: Failed to update state:", error)
+                                    });
+                                }
+                            });
+                        }
                     }
                 }
 
-                //Error Handler
+                //LP Error Handler
                 var lpErrorHandler = function (err) {
                     if (err) {
                         console.error("Error received at lpErrorHandler: ", err);
@@ -79,11 +45,67 @@
 
                 lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                 lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
-                lpTag.agentSDK.bind('agentInfo.sessionId', lpEventReceiver, lpErrorHandler);
-            } catch (error) {
-                console.error("Error at initSDK: ", error);
+                lpTag.agentSDK.bind('chatInfo', lpEventReceiver, lpErrorHandler);
+
+            } catch (lpError) {
+                console.error("Error at LPSDK: ", lpError);
+            }
+
+
+            //AWS SDK
+            try {
+                var instanceBase = "https://ccaa-aws-connect-sandbox.my.connect.aws";
+                var instanceURL = instanceBase + "/ccp-v2/";
+                var instanceLogin = instanceBase + "/login";
+
+                var containerDiv = document.getElementById("container-div");
+
+                connect.core.initCCP(containerDiv, {
+                    ccpUrl: instanceURL,
+                    loginPopup: true,
+                    loginPopupAutoClose: true,
+                    loginUrl: instanceLogin,
+                    softphone: {
+                        allowFramedSoftphone: true
+                    }
+                });
+                
+                connect.contact(function (contact) {
+                    //contact.onConnecting
+                    contact.onConnected(function (contact) {
+                        console.log("Optum: Recevied onConnected from Amazon connect, Data: ", JSON
+                            .stringify(contact));
+                        if (location.search) {
+                            var urlParams = decodeURIComponent(location.search);
+                            const params = new URLSearchParams(urlParams);
+                            currentAgentID = params.get('ENT_AgentID');
+                            console.log("LP ENT_AgentID: ", currentAgentID);
+                            if (currentAgentID == 'None') {
+                                alert("Current AgentID is: ", currentAgentID);
+                            } else {
+                                console.log("Current AgentID is: ", currentAgentID);
+                                //changeAgentStatus('ONLINE');
+                            }
+                        }
+
+                        // var attributeMap = contact.getAttributes();
+                        // var baseURL =
+                        //     "https://dev240867.service-now.com/incident.do?sys_id=-1&sysparm_query=";
+                        // //var searchString = attributeMap.screenPopValue.value;
+                        // //var screenpopURL = baseURL + searchString +"/view";
+                        // //window.open(screenpopURL)
+                        // window.open(baseURL +
+                        //     "caller_id=77ad8176731313005754660c4cf6a7de^short_description=Password Reset^description=I want to reset my laptop password",
+                        //     '_blank')
+                        // console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: " +
+                        //     screenpopURL);
+                    });
+                });
+            } catch (awsError) {
+                console.error("Error at AWS SDK: ", awsError);
             }
         }
     </script>
 </body>
+
 </html>

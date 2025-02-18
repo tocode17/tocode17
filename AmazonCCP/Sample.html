@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+</head>
+
+<body onload="initSDK()">
+    <h1>Test Widget</h1>
+    <script>
+        function callLivePersonFunction() {
+            lpTag.agentSDK.command(
+                'liveperson.function.execute', {
+                    functionName: 'myagentListener', // Replace with your function name
+                    parameters: {
+                        key1: 'Hello',
+                        key2: 'Vanakkam!!'
+                    } // Pass any required data
+                },
+                (data) => console.log('Function Response:', JSON.stringify(data)),
+                (err) => console.error('Error calling function:', err)
+            );
+        }
+
+        // Function to get agent session details
+        function getAgentSession() {
+            lpTag.agentSDK.get(
+                'agentSession',
+                (data) => console.log('Agent Session Data:', JSON.stringify(data)),
+                (err) => console.error('Error retrieving session data:', err)
+            );
+        }
+
+        function changeAgentStatus(newStatus) {
+            try {
+                lpTag.agentSDK.command(
+                    'agent.setStatus', {
+                        availability: newStatus
+                    },
+                    (data) => console.log('Status updated successfully:', data),
+                    (err) => console.error('Error updating status:', err)
+                );
+            } catch (erro) {
+                console.error('Error at changeAgentStatus: ', erro);
+            }
+
+        }
+
+        function initSDK() {
+            try {
+                lpTag.agentSDK.init({});
+                const currentAgentID = 'None';
+                //Event Receiver
+                var lpEventReceiver = function (data) {
+                    //const path = data.key;
+                    //const value = data.newValue;
+                    console.log("LP Event Receiver Data: " + JSON.stringify(data));
+                    callLivePersonFunction();
+                    getAgentSession();
+                    changeAgentStatus('ONLINE');
+                    var urlParams = decodeURIComponent(location.search);
+                    const params = new URLSearchParams(urlParams);
+                    currentAgentID = params.get('ENT_AgentID');
+                    console.log("LP ENT_AgentID: ", currentAgentID);
+                    if (currentAgentID == 'None') {
+                        alert("Current AgentID is: ", currentAgentID);
+                    } else {
+                        console("Current AgentID is: ", currentAgentID);
+                        //changeAgentStatus('ONLINE');
+                    }
+                }
+
+                //Error Handler
+                var lpErrorHandler = function (err) {
+                    if (err) {
+                        console.error("Error received at lpErrorHandler: ", err);
+                    }
+                };
+
+                lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('agentInfo.sessionId', lpEventReceiver, lpErrorHandler);
+            } catch (error) {
+                console.error("Error at initSDK: ", error);
+            }
+        }
+    </script>
+</body>
+</html>
