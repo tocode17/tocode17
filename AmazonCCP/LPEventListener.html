@@ -59,22 +59,13 @@
                         console.error("Error received at lpErrorHandler: ", err);
                     }
                 };
-
-                lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-                lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
-
-                // Subscribe to real-time conversation updates
-                lpTag.agentSDK.subscribe({
-                        type: 'routing.agentUserSession',
-                        skillId: '*', // Subscribe to all skills (use specific IDs if needed)
-                    },
-                    (data) => {
-                        console.log("LP Conversation Data:", data);
-                    },
-                    (error) => {
-                        console.error("LP Subscription Error:", error);
-                    }
-                );
+                if (lpTag.agentSDK != undefined) {
+                    console.error("LP agentSDK binding starts");
+                    lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
+                    lpTag.agentSDK.bind('routing.agentUserSession', lpEventReceiver, lpErrorHandler);
+                    lpTag.agentSDK.bind('messaging.agentConversation', lpEventReceiver, lpErrorHandler);
+                    lpTag.agentSDK.bind('agentStatus', lpEventReceiver, lpErrorHandler);
+                }
 
             } catch (lpError) {
                 console.error("Error at LPSDK: ", lpError);
