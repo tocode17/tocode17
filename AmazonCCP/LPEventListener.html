@@ -59,12 +59,12 @@
                         console.error("Error received at lpErrorHandler: ", err);
                     }
                 };
+                
                 if (lpTag.agentSDK != undefined) {
-                    console.error("LP agentSDK binding starts");
+                    console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('routing.agentUserSession', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('messaging.agentConversation', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('agentStatus', lpEventReceiver, lpErrorHandler);
+                    //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
+                   
                 }
 
             } catch (lpError) {
