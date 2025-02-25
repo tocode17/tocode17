@@ -5,13 +5,16 @@
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
     <script src="amazon-connect.min.js"></script>
     <style>
-        *, body {
+        *,
+        body {
             margin: 0;
-            padding:0
+            padding: 0
         }
+
         iframe {
             border: 0px
         }
+
         #container-div {
             width: 400px;
             height: 600px
@@ -20,7 +23,7 @@
 </head>
 
 <body onload="initSDKs()">
-<div id="container-div"></div>
+    <div id="container-div"></div>
     <script>
         function initSDKs() {
             try {
@@ -34,14 +37,15 @@
                         if (connect) {
                             connect.agent((agent) => {
                                 const states = agent.getAgentStates();
-                                const availableState = states.find(state => state.name === "After Call Work");
+                                const availableState = states.find(state => state.name ===
+                                    "After Call Work");
                                 if (availableState) {
                                     agent.setState(availableState, {
                                         success: () => console.log(
-                                            "Optum: Agent state updated to Available: ", states
+                                            "Optum: AC Agent state updated to: ", availableState
                                         ),
                                         failure: (error) => console.error(
-                                            "Optum: Failed to update state:", error)
+                                            "Optum: AC Failed to update state:", error)
                                     });
                                 }
                             });
@@ -57,8 +61,20 @@
                 };
 
                 lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-                lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
-                lpTag.agentSDK.bind('chatInfo', lpEventReceiver, lpErrorHandler);
+                lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
+
+                // Subscribe to real-time conversation updates
+                lpTag.agentSDK.subscribe({
+                        type: 'routing.agentUserSession',
+                        skillId: '*', // Subscribe to all skills (use specific IDs if needed)
+                    },
+                    (data) => {
+                        console.log("LP Conversation Data:", data);
+                    },
+                    (error) => {
+                        console.error("LP Subscription Error:", error);
+                    }
+                );
 
             } catch (lpError) {
                 console.error("Error at LPSDK: ", lpError);
@@ -100,6 +116,8 @@
                                 //changeAgentStatus('ONLINE');
                             }
                         }
+
+                        // Servicenow Screenpopup
 
                         // var attributeMap = contact.getAttributes();
                         // var baseURL =
