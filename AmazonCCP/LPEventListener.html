@@ -33,23 +33,40 @@
                 var lpEventReceiver = function (data) {
                     console.log("LP Event Receiver Data: " + JSON.stringify(data));
                     const event = data.key;
-                    if (event === 'chatInfo.rtSessionId') {
-                        if (connect) {
-                            connect.agent((agent) => {
-                                const states = agent.getAgentStates();
-                                const availableState = states.find(state => state.name ===
-                                    "After Call Work");
-                                if (availableState) {
-                                    agent.setState(availableState, {
-                                        success: () => console.log(
-                                            "Optum: AC Agent state updated to: ", availableState
-                                        ),
-                                        failure: (error) => console.error(
-                                            "Optum: AC Failed to update state:", error)
-                                    });
-                                }
-                            });
+                    try {
+                        if (event === 'chatInfo.rtSessionId') {
+                            if (connect) {
+                                connect.agent((agent) => {
+                                    let activeContacts = agent.getContacts();
+                                    console.log("Optum: AC Active Conversations: ", activeContacts.length);
+                                    if (activeContacts.length > 0) {
+                                        console.log(
+                                            "Optum: AC Agent handling conversations, unable to change agent status"
+                                        );
+                                    } else {
+                                        connect.agent((agent) => {
+                                            const states = agent.getAgentStates();
+                                            const availableState = states.find(state => state
+                                                .name ===
+                                                "After Call Work");
+                                            if (availableState) {
+                                                agent.setState(availableState, {
+                                                    success: () => console.log(
+                                                        "Optum: AC Agent state updated to: ",
+                                                        availableState
+                                                    ),
+                                                    failure: (error) => console.error(
+                                                        "Optum: AC Failed to update state:",
+                                                        error)
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         }
+                    } catch (error) {
+
                     }
                 }
 
@@ -59,13 +76,13 @@
                         console.error("Error received at lpErrorHandler: ", err);
                     }
                 };
-                
+
                 if (lpTag.agentSDK != undefined) {
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                     lpTag.agentSDK.bind('agent', lpEventReceiver, lpErrorHandler);
                     //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
-                   
+
                 }
 
             } catch (lpError) {
