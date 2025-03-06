@@ -23,10 +23,10 @@
     </style>
 </head>
 
-<body onload="initAgentSDK()">
+<body onload="initAgentSDKs()">
     <div id="container-div"></div>
     <script>
-        function initAgentSDK() {
+        function initAgentSDKs() {
             try {
                 const lpTag = window.lpTag || {};
                 lpTag.agentSDK = lpTag.agentSDK || new window.LPAgentSDK();
