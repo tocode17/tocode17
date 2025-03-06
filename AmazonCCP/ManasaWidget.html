@@ -1,0 +1,330 @@
+<html>
+
+<head>
+    <!-- <script src="./aarp_stage_index.js"></script> -->
+    <style>
+        .split-screen {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .left-screen {
+            width: 80%;
+            /* defined width */
+        }
+
+        .mbr-text-size {
+            padding: 12px 18px;
+            font-family: UHC Serif Semibold, Georgia Bold, serif;
+            font-size: 0.85rem;
+            position: relative;
+            width: 411px;
+            left: 10px;
+            height: 400px;
+            line-break: anywhere;
+            line-height: revert-layer;
+            padding: -1px;
+        }
+
+        .label-size {
+            position: sticky;
+            left: 150px;
+            background-color: #fff;
+            color: #002677;
+            fill: #002677;
+            border: 2px solid #002677;
+            min-width: 92px;
+            /* padding: 12px 18px; */
+            border-radius: 24px;
+            border: 0;
+            line-height: 1.2;
+            font-family: UHC Sans Medium, Arial, sans-serif;
+            font-size: 1.25rem;
+            cursor: pointer;
+            background-color: #fff;
+            color: #002677;
+            fill: #002677;
+            font-weight: bold;
+        }
+
+        .btn-size {
+            position: sticky;
+            left: 150px;
+            background-color: #fff;
+            color: #002677;
+            fill: #002677;
+            border: 2px solid #002677;
+            min-width: 92px;
+            padding: 1px 15px;
+            border-radius: 24px;
+            border: 0;
+            line-height: 1.4;
+            font-family: UHC Sans Medium, Arial, sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #fff;
+            color: #002677;
+            fill: #002677;
+            border: 2px solid #002677;
+            font-weight: bold;
+        }
+
+        input:hover {
+            color: white;
+            background-color: #002677;
+        }
+
+        button {
+            font-family: inherit;
+            font-feature-settings: inherit;
+            font-variation-settings: inherit;
+            font-size: 100%;
+            font-weight: inherit;
+            line-height: inherit;
+            color: inherit;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        button {
+            text-transform: none
+        }
+
+        [type=button],
+        button {
+            -webkit-appearance: button;
+            background-color: transparent;
+            background-image: none
+        }
+
+        .global-chat-btn {
+            position: fixed;
+            z-index: 2000;
+            bottom: 20px;
+            right: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .global-chat-btn {
+            position: fixed;
+            z-index: 2000;
+            bottom: 20px;
+            right: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .global-chat-btn {
+                bottom: 30px;
+                right: 30px;
+            }
+        }
+
+        .global-chat-btn:focus {
+            outline: 2px solid #002677;
+            outline-offset: 4px;
+        }
+
+        .global-chat-btn:focus span.inside-focus {
+            outline: solid 2px white;
+            outline-offset: 2px;
+            display: flex;
+        }
+
+        .global-chat-btn span.ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 600ms linear;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .global-chat-btn .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .btn-container {
+            border-radius: 0;
+            padding: 10px 10px 10px 10px;
+            border-radius: 50%;
+            background-color: #0C55B8;
+            box-shadow: 0 0 5px -3px rgb(0 0 0 / 0.20), 0 8px 10px 1px rgb(0 0 0 / 0.14), 0 3px 14px 2px rgb(0 0 0 / 0.12);
+            transition: all 0.3s ease-in-out;
+            border: 4px solid #ffffff;
+            display: flex;
+            /* width: 60px;
+        height: 60px; */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-container:hover {
+            background-color: #002677;
+        }
+
+        .global-chat-bubble {
+            fill: white;
+        }
+
+        .global-chat-bubble:active {
+            fill: white;
+        }
+
+        .global-chat-line {
+            fill: #002677;
+        }
+
+        .global-chat-icon {
+            margin-top: 4px;
+        }
+    </style>
+    <script>
+        var memberInfo = {
+            FirstName: 'David',
+            LastName: 'Johnson',
+            ContactEmail: 'david.johnson@optum.com',
+            PhoneNumber: '+18089765432',
+            EmployeeMSID: '00156782',
+            empOS: 'Windows',
+            MachineName: 'ELITE Book',
+            ConnectionType: 'WLAN',
+            MobilePlatform: 'Android',
+            ENT_Unit: 'OPT',
+            ENT_Segment: 'OptumTech',
+            ENT_Function: 'ITSS',
+            ENT_SubFunction: 'ITSDOps',
+        };
+
+        function addMbrInfo() {
+            document.getElementById("memberInfo").value = JSON.stringify(memberInfo, null, 2);
+
+            if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo").value !=
+                '' && document.getElementById("memberInfo").value != 'undefined') {
+                invokeAWSChat();
+            } else {
+                alert("Please update required Member Custom Attributes");
+            }
+
+        }
+
+        function invokeAWSChat() {
+            try {
+                if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo")
+                    .value != '' && document.getElementById("memberInfo").value != 'undefined') {
+                    // Amazon Changes Start
+
+                    (function (w, d, x, id) {
+                        s = d.createElement('script');
+                        s.src = 'https://dtn7rvxwwlhud.cloudfront.net/amazon-connect-chat-interface-client.js';
+                        s.async = 1;
+                        s.id = id;
+                        d.getElementsByTagName('head')[0].appendChild(s);
+                        w[x] = w[x] || function () {
+                            (w[x].ac = w[x].ac || []).push(arguments)
+                        };
+                    })(window, document, 'amazon_connect', 'b6a44af8-afe4-432b-8f71-20aaff9684c9');
+                    amazon_connect('styles', {
+                        iconType: 'CHAT',
+                        openChat: {
+                            color: '#ffffff',
+                            backgroundColor: '#123456'
+                        },
+                        closeChat: {
+                            color: '#ffffff',
+                            backgroundColor: '#123456'
+                        }
+                    });
+                    amazon_connect('snippetId',
+                        'QVFJREFIaWFZYXRVSlpIekdkUUg5YXhZenVQMktKRXNIWTVFQWpBYVErTEdzRnpvZHdIbzd1bDU4THluMWxWMTZLRno0WXMvQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNbTN1TWxRVGZtbzFYSGVSNUFnRVFnQ3QrL2dsTFVmdGpoajRvN2RvK2lkOGQ5dWxOUUVwZW9JbzFvSHFaZkVFRUQyWVVNTDYvc3krdnE1dks6OnMxeTBzYjVyb3ZQdURaazlJMldRVVo0SlhrL0dEM25ocy9XNnFDVE11RkVQSmFNRERaRjIyUlhDbkM3dld3enYvWUE3d2FXUndZclBnNWY5WndCRzFsT2p1TU1tQm5YWDdzMkxmNVZCQUsrMlRoeVNQNFVpV0pEZ2ZJZi9MZEgyUU9MTWRzR2tsa0IyeGxYdCs1TzU0NkVMemRuZ3pDaz0='
+                        );
+                    amazon_connect('supportedMessagingContentTypes', ['text/plain', 'text/markdown',
+                        'application/vnd.amazonaws.connect.message.interactive',
+                        'application/vnd.amazonaws.connect.message.interactive.response'
+                    ]);
+                    amazon_connect('customStyles', {
+                        global: {
+                            frameWidth: '500px',
+                            frameHeight: '800px',
+                            textColor: '#000000',
+                            fontSize: '13px',
+                            footerHeight: '50px',
+                            typeface: 'Times New Roman',
+                        }
+                    })
+
+                    memberInfo = JSON.parse(document.getElementById("memberInfo").value);
+
+                    amazon_connect('customerDisplayName', function (callback) {
+                        var displayName = "Customer";
+                        displayName = memberInfo.FirstName + " " + memberInfo.LastName;
+                        callback(displayName);
+                    });
+
+                    amazon_connect('contactAttributes', memberInfo);
+                    //amazon_connect('initialMessage', 'help');
+                    // Amazon Changes End	
+                } else {
+                    alert("Please update required Amazon Custom Attributes");
+                }
+            } catch (ex) {
+                console.error("Error occured at ", ex);
+            }
+
+        }
+
+        /*
+        window.addEventListener("load", function(){
+        	console.log("Invoked AWS Chat on page refreshed.");
+        	invokeAWSChat();
+        });  
+        */
+    </script>
+</head>
+
+<body onload="addMbrInfo();">
+    <div class="split-screen">
+        <form class="left-screen">
+            <label for="memberInfo" class="label-size">Portal SDEs</label>
+            <textarea id="memberInfo" name="memberInfo" class="mbr-text-size"
+                placeholder="Amazon Custom Attributes"></textarea><br><br>
+            <br>
+            <br>
+            <input type="submit" value="Update Info" class="btn-size">
+        </form>
+        <div>
+            <img src="./itsschat.png" alt="ITSS Chat Portal Loading" style="width:100%;height:81%;">
+        </div>
+    </div>
+    <script>
+        try {
+            var form = document.querySelector("form");
+            form.addEventListener("submit", function (event) {
+                invokeAWSChat();
+                event.preventDefault();
+
+            });
+        } catch (ex) {
+            console.error("Error at updating memberInfo: ", ex);
+        }
+    </script>
+</body>
+
+</html>
