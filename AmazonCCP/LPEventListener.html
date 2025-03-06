@@ -2,7 +2,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+    <!-- <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@livepersoninc/agent-sdk"></script>
     <script src="amazon-connect.min.js"></script>
     <style>
         *,
@@ -22,9 +23,31 @@
     </style>
 </head>
 
-<body onload="initSDKs()">
+<body onload="initAgentSDK()">
     <div id="container-div"></div>
     <script>
+        function initAgentSDK() {
+            try {
+                const lpTag = window.lpTag || {};
+                lpTag.agentSDK = lpTag.agentSDK || new window.LPAgentSDK();
+
+                lpTag.agentSDK.init()
+                    .then(() => console.log("Agent SDK initialized"))
+                    .catch((err) => console.error("Agent SDK init error:", err));
+
+
+                lpTag.agentSDK.bind("chatTranscript.lines", (data) => {
+                    console.log("New message received:", data);
+                    updateCustomWidget(data); // Your function to update the UI
+                }, (err) => {
+                    console.error("Error binding to chat messages:", err);
+                });
+            } catch (error) {
+                console.error("Error at initAgentSDK: ", error);
+            }
+
+        }
+
         function initSDKs() {
             try {
                 lpTag.agentSDK.init({});
