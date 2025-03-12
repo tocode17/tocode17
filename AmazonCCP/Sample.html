@@ -21,14 +21,28 @@
                 (err) => console.error('Error calling function:', err)
             );
         }
-
         // Function to get agent session details
         function getAgentSession() {
             lpTag.agentSDK.get(
                 'agentSession',
-                (data) => console.log('Agent Session Data:', JSON.stringify(data)),
+                (data) => console.log('Agent Session Data:', data),
                 (err) => console.error('Error retrieving session data:', err)
             );
+        }
+
+        function changeAgentStatus(newStatus) {
+            try {
+                lpTag.agentSDK.command(
+                    'agent.setStatus', {
+                        availability: newStatus
+                    },
+                    (data) => console.log('Status updated successfully:', data),
+                    (err) => console.error('Error updating status:', err)
+                );
+            } catch (erro) {
+                console.error('Error at changeAgentStatus: ', erro);
+            }
+
         }
 
         function changeAgentStatus(newStatus) {
@@ -86,4 +100,5 @@
         }
     </script>
 </body>
+
 </html>

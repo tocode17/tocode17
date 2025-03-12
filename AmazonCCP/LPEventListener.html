@@ -48,6 +48,23 @@
 
         }
 
+        function changeAgentStatus(newStatus) {
+            try {
+                lpTag.agentSDK.command(
+                    'agent.setStatus', {
+                        availability: {
+                            "chat": "Online"
+                        }
+                    },
+                    (data) => console.log('Status updated successfully:', data),
+                    (err) => console.error('Error updating status:', err)
+                );
+            } catch (erro) {
+                console.error('Error at changeAgentStatus: ', erro);
+            }
+
+        }
+
         function initSDKs() {
             try {
                 lpTag.agentSDK.init({});
@@ -145,7 +162,7 @@
                                 alert("Current AgentID is: ", currentAgentID);
                             } else {
                                 console.log("Current AgentID is: ", currentAgentID);
-                                //changeAgentStatus('ONLINE');
+                                changeAgentStatus('ONLINE');
                             }
                         }
 
