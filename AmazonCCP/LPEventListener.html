@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@livepersoninc/agent-sdk"></script> -->
     <script src="amazon-connect.min.js"></script>
     <style>
         *,
@@ -26,28 +25,6 @@
 <body onload="initSDKs()">
     <div id="container-div"></div>
     <script>
-        function initAgentSDKs() {
-            try {
-                const lpTag = window.lpTag || {};
-                lpTag.agentSDK = lpTag.agentSDK || new window.LPAgentSDK();
-
-                lpTag.agentSDK.init()
-                    .then(() => console.log("Agent SDK initialized"))
-                    .catch((err) => console.error("Agent SDK init error:", err));
-
-
-                lpTag.agentSDK.bind("chatTranscript.lines", (data) => {
-                    console.log("New message received:", data);
-                    updateCustomWidget(data); // Your function to update the UI
-                }, (err) => {
-                    console.error("Error binding to chat messages:", err);
-                });
-            } catch (error) {
-                console.error("Error at initAgentSDK: ", error);
-            }
-
-        }
-
         function changeAgentStatus(newStatus) {
             try {
                 lpTag.agentSDK.command(
@@ -117,12 +94,30 @@
                     }
                 };
 
+                window.lpTag = window.lpTag || {};
+
+                function checkAgentStatus() {
+                    if (window.lpTag.taglets && window.lpTag.taglets.rendererStub) {
+                        window.lpTag.taglets.rendererStub.getEngagementDetails((data) => {
+                            console.log("Agent Status Data:", data);
+                            if (data && data.engagements && data.engagements.length > 0) {
+                                console.log("Agent is available");
+                            } else {
+                                console.log("No agents available");
+                            }
+                        });
+                    } else {
+                        console.log("LivePerson SDK not fully loaded yet.");
+                    }
+                }
+
                 if (lpTag.agentSDK != undefined) {
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                     lpTag.agentSDK.bind('agent', lpEventReceiver, lpErrorHandler);
                     //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
-
+                    window.lpTag.events.bind("LP_OFFERS", "OFFER_PRESENTED",
+                    checkAgentStatus); // Call function after SDK loads
                 }
 
             } catch (lpError) {

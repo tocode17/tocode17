@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@livepersoninc/agent-sdk"></script> -->
 </head>
 
 <body onload="initSDK()">
     <h1>Test Widget</h1>
     <script>
+        function initAgentSDKs() {
+            try {
+                const lpTag = window.lpTag || {};
+                lpTag.agentSDK = lpTag.agentSDK || new window.LPAgentSDK();
+
+                lpTag.agentSDK.init()
+                    .then(() => console.log("Agent SDK initialized"))
+                    .catch((err) => console.error("Agent SDK init error:", err));
+
+
+                lpTag.agentSDK.bind("chatTranscript.lines", (data) => {
+                    console.log("New message received:", data);
+                    updateCustomWidget(data); // Your function to update the UI
+                }, (err) => {
+                    console.error("Error binding to chat messages:", err);
+                });
+            } catch (error) {
+                console.error("Error at initAgentSDK: ", error);
+            }
+
+        }
+
         function callLivePersonFunction() {
             lpTag.agentSDK.command(
                 'liveperson.function.execute', {
@@ -42,6 +65,19 @@
             } catch (erro) {
                 console.error('Error at changeAgentStatus: ', erro);
             }
+
+            lpTag.agentSDK.command(
+                'agentUI.changeAvailability', {
+                    availability: 'ONLINE'
+                }, // Or 'AWAY', 'BACK_SOON', etc.
+                (err) => {
+                    if (err) {
+                        console.error('Error changing status:', err);
+                    } else {
+                        console.log('Agent status changed successfully');
+                    }
+                }
+            );
 
         }
 
