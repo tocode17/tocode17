@@ -115,7 +115,8 @@
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                     lpTag.agentSDK.bind('agent', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
+                    //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
+                    lpTag.agentSDK.bind('AGENT_STATE_UPDATED', lpEventReceiver, lpErrorHandler);
                     //lpTag.agentSDK.bind('LP_OFFERS', "OFFER_PRESENTED",checkAgentStatus, lpErrorHandler);
                 }
 
