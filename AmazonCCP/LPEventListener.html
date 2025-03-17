@@ -23,7 +23,7 @@
 </head>
 
 <body onload="initSDKs()">
-    <div id="container-div" allow="microphone"></div>
+    <iframe id="container-div" allow="microphone"></iframe>
     <script>
         function changeAgentStatus(newStatus) {
             try {
@@ -115,8 +115,8 @@
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                     lpTag.agentSDK.bind('agent', lpEventReceiver, lpErrorHandler);
-                    //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('LP_OFFERS', "OFFER_PRESENTED",checkAgentStatus, lpErrorHandler);
+                    lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
+                    //lpTag.agentSDK.bind('LP_OFFERS', "OFFER_PRESENTED",checkAgentStatus, lpErrorHandler);
                 }
 
             } catch (lpError) {
