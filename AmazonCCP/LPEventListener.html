@@ -114,10 +114,10 @@
                 if (lpTag.agentSDK != undefined) {
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
-                    lpTag.agentSDK.bind('agent', lpEventReceiver, lpErrorHandler);
+                    lpTag.agentSDK.bind('agentInfo.maxChats', lpEventReceiver, lpErrorHandler);
                     //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
                     // Listen for agent state changes
-                    lpTag.events.bind("lpUnifiedWindow", "state", function (data) {
+                    lpTag.agentSDK.bind("lpUnifiedWindow", "state", function (data) {
                         console.log("Agent state changed:", data);
                         // Handle the state change in your widget
                     })
