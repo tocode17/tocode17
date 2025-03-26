@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/@livepersoninc/agent-sdk"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@livepersoninc/agent-sdk"></script> -->
 </head>
 
 <body onload="initSDK()">
@@ -130,6 +130,13 @@
                 lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                 lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
                 lpTag.agentSDK.bind('agentInfo.sessionId', lpEventReceiver, lpErrorHandler);
+
+                navigator.mediaDevices.enumerateDevices()
+                    .then(function (devices) {
+                        const audioInputDevices = devices.filter(device => device.kind === 'audioinput');
+                        console.log('Available microphones:', audioInputDevices);
+
+                    });
             } catch (error) {
                 console.error("Error at initSDK: ", error);
             }
