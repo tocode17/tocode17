@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <title>David Johnson</title>
     <!-- <script src="./aarp_stage_index.js"></script> -->
     <style>
         .split-screen {
@@ -214,77 +215,75 @@
         };
 
         function addMbrInfo() {
-            document.getElementById("memberInfo").value = JSON.stringify(memberInfo, null, 2);
-
-            if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo").value !=
-                '' && document.getElementById("memberInfo").value != 'undefined') {
-                invokeAWSChat();
-            } else {
-                alert("Please update required Member Custom Attributes");
-            }
+            invokeAWSChat();
+            /* document.getElementById("memberInfo").value = JSON.stringify(memberInfo, null, 2);
+        
+        if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo").value != '' && document.getElementById("memberInfo").value != 'undefined') {
+        	invokeAWSChat();	
+        }else{
+      	  alert("Please update required Member Custom Attributes");
+        } */
 
         }
 
         function invokeAWSChat() {
             try {
-                if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo")
-                    .value != '' && document.getElementById("memberInfo").value != 'undefined') {
-                    // Amazon Changes Start
+                //if (document.getElementById("memberInfo").value != null && document.getElementById("memberInfo").value != '' && document.getElementById("memberInfo").value != 'undefined') {
+                // Amazon Changes Start
+                (function (w, d, x, id) {
+                    s = d.createElement('script');
+                    s.src = 'https://dtn7rvxwwlhud.cloudfront.net/amazon-connect-chat-interface-client.js';
+                    s.async = 1;
+                    s.id = id;
+                    d.getElementsByTagName('head')[0].appendChild(s);
+                    w[x] = w[x] || function () {
+                        (w[x].ac = w[x].ac || []).push(arguments)
+                    };
+                })(window, document, 'amazon_connect', '8a947476-38db-475c-8407-07867ffc76d3');
+                amazon_connect('styles', {
+                    iconType: 'CHAT',
+                    openChat: {
+                        color: '#ffffff',
+                        backgroundColor: '#123456'
+                    },
+                    closeChat: {
+                        color: '#ffffff',
+                        backgroundColor: '#123456'
+                    }
+                });
+                amazon_connect('snippetId',
+                    'QVFJREFIaWFZYXRVSlpIekdkUUg5YXhZenVQMktKRXNIWTVFQWpBYVErTEdzRnpvZHdGdjVTbExBa0d5alhXTVR3eExMRVMzQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNQm43NmU5SmFaTDRqR2NMRUFnRVFnQ3MrMC9VNnErSGs5Q1dRbFozeUlGM1JtVC82dHNudnM3TXNvYnY3cHZCcG5DcHBxSjBkYWlKdFg4eko6Om9KbVFiVnVpOHB5MmJmejhJY3J4djFKQTRGVmZwTHN4ZUtuOTduOFB0QlFYM1liOTE5cFMvL3VrdlJITmFnNVZYcHh1WUUwUGIxL3E3c2cxdUtWTUlTUDNsU1lLaVRmanc4a0J1N2t6YUtmOTlOUERVZEhlcUYxWEk4Y3l0L1MwT2VQTndPaXc3d3BZMkVkN1duYUZnckl6TkJOR0lzaz0='
+                );
+                amazon_connect('supportedMessagingContentTypes', ['text/plain', 'text/markdown',
+                    'application/vnd.amazonaws.connect.message.interactive',
+                    'application/vnd.amazonaws.connect.message.interactive.response'
+                ]);
 
-                    (function (w, d, x, id) {
-                        s = d.createElement('script');
-                        s.src = 'https://dtn7rvxwwlhud.cloudfront.net/amazon-connect-chat-interface-client.js';
-                        s.async = 1;
-                        s.id = id;
-                        d.getElementsByTagName('head')[0].appendChild(s);
-                        w[x] = w[x] || function () {
-                            (w[x].ac = w[x].ac || []).push(arguments)
-                        };
-                    })(window, document, 'amazon_connect', '8a947476-38db-475c-8407-07867ffc76d3');
-                    amazon_connect('styles', {
-                        iconType: 'CHAT',
-                        openChat: {
-                            color: '#ffffff',
-                            backgroundColor: '#123456'
-                        },
-                        closeChat: {
-                            color: '#ffffff',
-                            backgroundColor: '#123456'
-                        }
-                    });
-                    amazon_connect('snippetId',
-                        'QVFJREFIaWFZYXRVSlpIekdkUUg5YXhZenVQMktKRXNIWTVFQWpBYVErTEdzRnpvZHdGdjVTbExBa0d5alhXTVR3eExMRVMzQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNQm43NmU5SmFaTDRqR2NMRUFnRVFnQ3MrMC9VNnErSGs5Q1dRbFozeUlGM1JtVC82dHNudnM3TXNvYnY3cHZCcG5DcHBxSjBkYWlKdFg4eko6Om9KbVFiVnVpOHB5MmJmejhJY3J4djFKQTRGVmZwTHN4ZUtuOTduOFB0QlFYM1liOTE5cFMvL3VrdlJITmFnNVZYcHh1WUUwUGIxL3E3c2cxdUtWTUlTUDNsU1lLaVRmanc4a0J1N2t6YUtmOTlOUERVZEhlcUYxWEk4Y3l0L1MwT2VQTndPaXc3d3BZMkVkN1duYUZnckl6TkJOR0lzaz0='
-                        );
-                    amazon_connect('supportedMessagingContentTypes', ['text/plain', 'text/markdown',
-                        'application/vnd.amazonaws.connect.message.interactive',
-                        'application/vnd.amazonaws.connect.message.interactive.response'
-                    ]);
+                amazon_connect('customStyles', {
+                    global: {
+                        frameWidth: '500px',
+                        frameHeight: '800px',
+                        textColor: '#000000',
+                        fontSize: '13px',
+                        footerHeight: '50px',
+                        typeface: 'Times New Roman',
+                    }
+                })
 
-                    amazon_connect('customStyles', {
-                        global: {
-                            frameWidth: '500px',
-                            frameHeight: '800px',
-                            textColor: '#000000',
-                            fontSize: '13px',
-                            footerHeight: '50px',
-                            typeface: 'Times New Roman',
-                        }
-                    })
+                //memberInfo = JSON.parse(document.getElementById("memberInfo").value);
 
-                    memberInfo = JSON.parse(document.getElementById("memberInfo").value);
+                amazon_connect('customerDisplayName', function (callback) {
+                    var displayName = "Customer";
+                    displayName = memberInfo.FirstName + " " + memberInfo.LastName;
+                    callback(displayName);
+                });
 
-                    amazon_connect('customerDisplayName', function (callback) {
-                        var displayName = "Customer";
-                        displayName = memberInfo.FirstName + " " + memberInfo.LastName;
-                        callback(displayName);
-                    });
-
-                    amazon_connect('contactAttributes', memberInfo);
-                    //amazon_connect('initialMessage', 'help');
-                    // Amazon Changes End	
-                } else {
-                    alert("Please update required Amazon Custom Attributes");
-                }
+                amazon_connect('contactAttributes', memberInfo);
+                //amazon_connect('initialMessage', 'help');
+                // Amazon Changes End	
+                /* }else{
+        	  alert("Please update required Amazon Custom Attributes");
+          } */
             } catch (ex) {
                 console.error("Error occured at ", ex);
             }
@@ -301,31 +300,34 @@
 </head>
 
 <body onload="addMbrInfo();">
+    <!-- 
     <div class="split-screen">
-        <form class="left-screen">
-            <label for="memberInfo" class="label-size">Portal SDEs</label>
-            <textarea id="memberInfo" name="memberInfo" class="mbr-text-size"
-                placeholder="Amazon Custom Attributes"></textarea><br><br>
-            <br>
-            <br>
-            <input type="submit" value="Update Info" class="btn-size">
-        </form>
-        <div>
-            <img src="./itsschat.png" alt="ITSS Chat Portal Loading" style="width:100%;height:81%;">
-        </div>
-    </div>
-    <script>
-        try {
-            var form = document.querySelector("form");
-            form.addEventListener("submit", function (event) {
-                invokeAWSChat();
-                event.preventDefault();
+      
+     <!--  <form class="left-screen">
+        <label for="memberInfo" class="label-size">Portal SDEs</label>
+        <textarea id="memberInfo" name="memberInfo" class="mbr-text-size"  placeholder="Amazon Custom Attributes"></textarea><br><br>
+        <br>
+        <br>
+        <input type="submit" value="Update Info" class="btn-size">
+      </form> -->
 
-            });
-        } catch (ex) {
-            console.error("Error at updating memberInfo: ", ex);
-        }
-    </script>
+
+    </div>
+    <div>
+        <img src="./itsschat.png" alt="ITSS Chat Portal Loading" style="width:100%;height:100%;">
+    </div>
+    <!-- <script>
+      try {
+        var form = document.querySelector("form");
+        form.addEventListener("submit", function(event) {
+        	invokeAWSChat();
+          event.preventDefault();
+          
+        });
+      } catch (ex) {
+        console.error("Error at updating memberInfo: ", ex);
+      }
+    </script> -->
 </body>
 
 </html>
