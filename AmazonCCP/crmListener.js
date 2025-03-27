@@ -6,11 +6,8 @@ var softphoneOrigin;
 window.addEventListener("message", function (event) {
     try {
         var message = event.data;
-        if (message && checkValueNotEmpty(message.type)) {
-            if (isServiceNowIntegrationEnabled)
-                infoLog("crmEventListener, Received softphone event, name", message.type);
-            else
-                console.info(getTimeStamp() + " snCRM: crmEventListener, Received softphone event, name(): ", message.type);
+        if (message && message.type) {
+            console.info(" snCRM: crmEventListener, Received softphone event, name(): ", message.type);
             switch (message.type) {
                 case 'interactionEvent':
                     console.log(" snCRM: interactionEvent: ", message);
