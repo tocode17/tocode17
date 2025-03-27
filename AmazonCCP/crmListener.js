@@ -5,6 +5,7 @@ var softphoneOrigin;
 
 window.addEventListener("message", function (event) {
     try {
+        console.info(" snCRM: crmEventListener, Received softphone raw event: ", event);
         var message = event.data;
         if (message && message.type) {
             console.info(" snCRM: crmEventListener, Received softphone event, name(): ", message.type);
