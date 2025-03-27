@@ -25,6 +25,20 @@
 <body onload="initSDKs()">
     <div id="container-div" allow="microphone"></div>
     <script>
+        var serviceNowURL;
+        var SNOpenFrameAPI;
+
+        try {
+            console.log("snow: Trying to connect servicenow CRM");
+            serviceNowURL = window.origin;
+            SNOpenFrameAPI = document.createElement("script");
+            SNOpenFrameAPI.type = "text/javascript";
+            SNOpenFrameAPI.src = serviceNowURL + "/scripts/openframe/latest/openFrameAPI.min.jsx";
+            document.getElementsByTagName('head')[0].appendChild(SNOpenFrameAPI);
+        } catch (err) {
+            console.log("snow: Error occured at init() ", err);
+        }
+
         window.addEventListener("message", function (event) {
             try {
                 if (event.origin && event.origin == "https://ccaa-aws-connect-sandbox.my.connect.aws") {
