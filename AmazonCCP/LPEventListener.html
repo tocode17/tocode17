@@ -28,30 +28,30 @@
         var serviceNowURL;
         var SNOpenFrameAPI;
 
-        try {
-            console.log("snow: Trying to connect servicenow CRM");
-            serviceNowURL = "https://dev240867.service-now.com";
-            SNOpenFrameAPI = document.createElement("script");
-            SNOpenFrameAPI.type = "text/javascript";
-            SNOpenFrameAPI.src = serviceNowURL + "/scripts/openframe/latest/openFrameAPI.min.jsx";
-            document.getElementsByTagName('head')[0].appendChild(SNOpenFrameAPI);
-        } catch (err) {
-            console.log("snow: Error occured at init() ", err);
-        }
+        // try {
+        //     console.log("snow: Trying to connect servicenow CRM");
+        //     serviceNowURL = "https://dev240867.service-now.com";
+        //     SNOpenFrameAPI = document.createElement("script");
+        //     SNOpenFrameAPI.type = "text/javascript";
+        //     SNOpenFrameAPI.src = serviceNowURL + "/scripts/openframe/latest/openFrameAPI.min.jsx";
+        //     document.getElementsByTagName('head')[0].appendChild(SNOpenFrameAPI);
+        // } catch (err) {
+        //     console.log("snow: Error occured at init() ", err);
+        // }
 
-        window.addEventListener("message", function (event) {
-            try {
-                if (event.origin && event.origin == "https://ccaa-aws-connect-sandbox.my.connect.aws") {
-                    return;
-                }
-                var message = event.data;
-                if (message) {
-                    console.log("SNOW EventListener, Received softphone event, name", message.type);
-                }
-            } catch (err) {
-                console.log("Error at SNOW eventListener", err);
-            }
-        });
+        // window.addEventListener("message", function (event) {
+        //     try {
+        //         if (event.origin && event.origin == "https://ccaa-aws-connect-sandbox.my.connect.aws") {
+        //             return;
+        //         }
+        //         var message = event.data;
+        //         if (message) {
+        //             console.log("SNOW EventListener, Received softphone event, name", message.type);
+        //         }
+        //     } catch (err) {
+        //         console.log("Error at SNOW eventListener", err);
+        //     }
+        // });
 
         function changeAgentStatus(newStatus) {
             try {
@@ -199,18 +199,18 @@
 
                         // Servicenow Screenpopup
 
-                        var recordName = "incident";
-                        var client = new XMLHttpRequest();
-                        client.open("get", serviceNowURL + "/api/now/table/" + recordName +
-                            "?sysparm_query=" + finalQuery, true);
-                        infoLog("performRecordSearch", " record search query: " + finalQuery);
-                        client.setRequestHeader('Content-Type', 'application/json');
-                        client.setRequestHeader('X-UserToken', g_ck);
-                        client.onreadystatechange = function () {
-                            if (this.readyState == 4 & this.status == 200) {
-                                console.log("API Call Sucess: ", this.response);
-                            }
-                        }
+                        // var recordName = "incident";
+                        // var client = new XMLHttpRequest();
+                        // client.open("get", serviceNowURL + "/api/now/table/" + recordName +
+                        //     "?sysparm_query=" + finalQuery, true);
+                        // infoLog("performRecordSearch", " record search query: " + finalQuery);
+                        // client.setRequestHeader('Content-Type', 'application/json');
+                        // client.setRequestHeader('X-UserToken', g_ck);
+                        // client.onreadystatechange = function () {
+                        //     if (this.readyState == 4 & this.status == 200) {
+                        //         console.log("API Call Sucess: ", this.response);
+                        //     }
+                        // }
 
                         // var attributeMap = contact.getAttributes();
                         // var baseURL =
