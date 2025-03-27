@@ -30,7 +30,7 @@
 
         try {
             console.log("snow: Trying to connect servicenow CRM");
-            serviceNowURL = window.origin;
+            serviceNowURL = "https://dev240867.service-now.com";
             SNOpenFrameAPI = document.createElement("script");
             SNOpenFrameAPI.type = "text/javascript";
             SNOpenFrameAPI.src = serviceNowURL + "/scripts/openframe/latest/openFrameAPI.min.jsx";
@@ -199,7 +199,6 @@
 
                         // Servicenow Screenpopup
 
-                        var serviceNowURL = "https://dev240867.service-now.com";
                         var recordName = "incident";
                         var client = new XMLHttpRequest();
                         client.open("get", serviceNowURL + "/api/now/table/" + recordName +
