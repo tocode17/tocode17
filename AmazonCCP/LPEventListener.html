@@ -27,6 +27,9 @@
     <script>
         window.addEventListener("message", function (event) {
             try {
+                if (event.origin && event.origin == "https://ccaa-aws-connect-sandbox.my.connect.aws") {
+                    return;
+                }
                 var message = event.data;
                 if (message) {
                     console.log("SNOW EventListener, Received softphone event, name", message.type);
