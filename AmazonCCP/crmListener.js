@@ -10,18 +10,31 @@ window.addEventListener("message", function (event) {
         if (message && message.type) {
             console.info(" snCRM: crmEventListener, Received softphone event, name(): ", message.type);
             switch (message.type) {
-                case 'interactionEvent':
-                    console.log(" snCRM: interactionEvent: ", message);
+                case 'eventAccepted':
+                    console.log(" snCRM: AWS Accepted Event: ", message);
+                    // Servicenow Screenpopup
+                    var recordName = "incident";
+                    var client = new XMLHttpRequest();
+                    client.open("get", serviceNowURL + "/api/now/table/" + recordName +
+                        "?sysparm_query=" + finalQuery, true);
+                    infoLog("performRecordSearch", " record search query: " + finalQuery);
+                    client.setRequestHeader('Content-Type', 'application/json');
+                    client.setRequestHeader('X-UserToken', g_ck);
+                    client.onreadystatechange = function () {
+                        if (this.readyState == 4 & this.status == 200) {
+                            console.log("API Call Success: ", this.response);
+                            openFrameAPI.openServiceNowForm({
+                                entity: 'incident',
+                                query: 'sys_id=76a6d66a833312106a0bf855eeaad32a'
+                            });
+                        }
+                    }
                     break;
                 default:
                     break;
             }
         } else if (event.type == 'message' && event.data) {
             try {
-                openFrameAPI.openServiceNowForm({
-                    entity: 'incident',
-                    query: 'sys_id=76a6d66a833312106a0bf855eeaad32a'
-                });
                 var jsonData = JSON.parse(event.data);
                 if (jsonData.eventName) {
                     switch (jsonData.eventName) {
