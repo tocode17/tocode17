@@ -18,6 +18,10 @@ window.addEventListener("message", function (event) {
             }
         } else if (event.type == 'message' && event.data) {
             try {
+                openFrameAPI.openServiceNowForm({
+                    entity: 'incident',
+                    query: 'sys_id=76a6d66a833312106a0bf855eeaad32a'
+                });
                 var jsonData = JSON.parse(event.data);
                 if (jsonData.eventName) {
                     switch (jsonData.eventName) {
