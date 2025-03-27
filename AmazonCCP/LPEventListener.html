@@ -25,6 +25,17 @@
 <body onload="initSDKs()">
     <div id="container-div" allow="microphone"></div>
     <script>
+        window.addEventListener("message", function (event) {
+            try {
+                var message = event.data;
+                if (message) {
+                    console.log("SNOW EventListener, Received softphone event, name", message.type);
+                }
+            } catch (err) {
+                console.log("Error at SNOW eventListener", err);
+            }
+        });
+
         function changeAgentStatus(newStatus) {
             try {
                 lpTag.agentSDK.command(
@@ -55,7 +66,8 @@
                             if (connect) {
                                 connect.agent((agent) => {
                                     let activeContacts = agent.getContacts();
-                                    console.log("Optum: AC Active Conversations: ", activeContacts.length);
+                                    console.log("Optum: AC Active Conversations: ", activeContacts
+                                        .length);
                                     if (activeContacts.length > 0) {
                                         console.log(
                                             "Optum: AC Agent handling conversations, unable to change agent status"
@@ -63,7 +75,8 @@
                                     } else {
                                         connect.agent((agent) => {
                                             const states = agent.getAgentStates();
-                                            const availableState = states.find(state => state
+                                            const availableState = states.find(state =>
+                                                state
                                                 .name ===
                                                 "After Call Work");
                                             if (availableState) {
@@ -72,9 +85,10 @@
                                                         "Optum: AC Agent state updated to: ",
                                                         availableState
                                                     ),
-                                                    failure: (error) => console.error(
-                                                        "Optum: AC Failed to update state:",
-                                                        error)
+                                                    failure: (error) => console
+                                                        .error(
+                                                            "Optum: AC Failed to update state:",
+                                                            error)
                                                 });
                                             }
                                         });
@@ -150,7 +164,8 @@
                 connect.contact(function (contact) {
                     //contact.onConnecting
                     contact.onConnected(function (contact) {
-                        console.log("Optum: Recevied onConnected from Amazon connect, Data: ", JSON
+                        console.log("Optum: Recevied onConnected from Amazon connect, Data: ",
+                            JSON
                             .stringify(contact));
                         if (location.search) {
                             var urlParams = decodeURIComponent(location.search);
@@ -166,6 +181,20 @@
                         }
 
                         // Servicenow Screenpopup
+
+                        var serviceNowURL = "https://dev240867.service-now.com";
+                        var recordName = "incident";
+                        var client = new XMLHttpRequest();
+                        client.open("get", serviceNowURL + "/api/now/table/" + recordName +
+                            "?sysparm_query=" + finalQuery, true);
+                        infoLog("performRecordSearch", " record search query: " + finalQuery);
+                        client.setRequestHeader('Content-Type', 'application/json');
+                        client.setRequestHeader('X-UserToken', g_ck);
+                        client.onreadystatechange = function () {
+                            if (this.readyState == 4 & this.status == 200) {
+                                console.log("API Call Sucess: ", this.response);
+                            }
+                        }
 
                         // var attributeMap = contact.getAttributes();
                         // var baseURL =
