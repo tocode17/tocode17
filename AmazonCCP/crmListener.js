@@ -16,13 +16,10 @@ window.addEventListener("message", function (event) {
                 default:
                     break;
             }
-        } else if (event.type == 'message') {
-            if (!checkValueNotEmpty(event.data)) {
-                return;
-            }
+        } else if (event.type == 'message' && event.data) {
             try {
                 var jsonData = JSON.parse(event.data);
-                if (checkValueNotEmpty(jsonData.eventName)) {
+                if (jsonData.eventName) {
                     switch (jsonData.eventName) {
                         case 'openframe_collapse':
                             openFrameAPI.hide();
