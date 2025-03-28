@@ -16,7 +16,7 @@
         }
 
         #container-div {
-            width: 400px;
+            width: 500px;
             height: 600px
         }
     </style>
@@ -25,23 +25,6 @@
 <body onload="initSDKs()">
     <div id="container-div" allow="microphone"></div>
     <script>
-        function changeAgentStatus(newStatus) {
-            try {
-                lpTag.agentSDK.command(
-                    'agent.setStatus', {
-                        availability: {
-                            "chat": "Online"
-                        }
-                    },
-                    (data) => console.log('Status updated successfully:', data),
-                    (err) => console.error('Error updating status:', err)
-                );
-            } catch (erro) {
-                console.error('Error at changeAgentStatus: ', erro);
-            }
-
-        }
-
         function initSDKs() {
             //AWS SDK
             try {
