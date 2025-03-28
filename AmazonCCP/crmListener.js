@@ -58,7 +58,7 @@ function recordSearch(recordName, callData) {
     try {
         var finalQuery = '';
         var client = new XMLHttpRequest();
-        finalQuery = 'email=' + callData.HostedWidget - ContactEmail.value;
+        finalQuery = 'email=' + callData['HostedWidget-ContactEmail'].value;
         client.open("get", serviceNowURL + "/api/now/table/" + recordName + "?sysparm_query=" + finalQuery, true);
         console.log("recordSearch", " record search query: " + finalQuery);
         client.setRequestHeader('Content-Type', 'application/json');
