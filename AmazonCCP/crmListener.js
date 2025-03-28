@@ -13,7 +13,7 @@ window.addEventListener("message", function (event) {
                 case 'eventAccepted':
                     console.log(" snCRM: AWS Accepted Event: ", message);
                     // Servicenow Record Creation
-                    recordSearch("incident", message.data);
+                    recordSearch("sys_user", message.data);
 
                     // Servicenow Record Creation
                     //recordCreation("incident", bodyData, message.data, callback);
