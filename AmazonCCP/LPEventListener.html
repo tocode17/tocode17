@@ -151,7 +151,14 @@
                 });
 
                 connect.contact(function (contact) {
-                    //contact.onConnecting
+
+                    contact.onConnecting(function (contact) {
+                        window.parent.postMessage({
+                            type: 'eventRinging',
+                            data: contact.getAttributes()
+                        }, '*');
+                    });
+
                     contact.onConnected(function (contact) {
                         console.log("Optum: Recevied onConnected from Amazon connect, Data: ",
                             JSON

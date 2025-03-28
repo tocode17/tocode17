@@ -1,34 +1,19 @@
-var configManager = {};
 var serviceNowURL;
 var SNOpenFrameAPI;
-var softphoneOrigin;
 
 window.addEventListener("message", function (event) {
     try {
-        console.info(" snCRM: crmEventListener, Received softphone raw event: ", event);
+        console.info(" snCRM: Received softphone raw event: ", event);
         var message = event.data;
         if (message && message.type) {
-            console.info(" snCRM: crmEventListener, Received softphone event, name(): ", message.type);
             switch (message.type) {
+                case 'eventRinging':
+                    openFrameAPI.show();
+                    break;
                 case 'eventAccepted':
                     console.log(" snCRM: AWS Accepted Event: ", message);
-                    // Servicenow Screenpopup
-                    var recordName = "incident";
-                    var client = new XMLHttpRequest();
-                    client.open("get", serviceNowURL + "/api/now/table/" + recordName +
-                        "?sysparm_query=" + finalQuery, true);
-                    infoLog("performRecordSearch", " record search query: " + finalQuery);
-                    client.setRequestHeader('Content-Type', 'application/json');
-                    client.setRequestHeader('X-UserToken', g_ck);
-                    client.onreadystatechange = function () {
-                        if (this.readyState == 4 & this.status == 200) {
-                            console.log("API Call Success: ", this.response);
-                            openFrameAPI.openServiceNowForm({
-                                entity: 'incident',
-                                query: 'sys_id=76a6d66a833312106a0bf855eeaad32a'
-                            });
-                        }
-                    }
+                    // Servicenow Record Creation
+                    recordCreation("incident", bodyData, message.data, callback);
                     break;
                 default:
                     break;
@@ -47,7 +32,7 @@ window.addEventListener("message", function (event) {
             } catch (error) {}
         }
     } catch (err) {
-        console.log(" snCRM: Error at CRM eventListener", err);
+        console.error(" snCRM: Error at CRM eventListener", err);
     }
 });
 
@@ -63,5 +48,39 @@ function init() {
         document.getElementsByTagName('head')[0].appendChild(SNOpenFrameAPI);
     } catch (err) {
         console.log(" snCRM: Error occured at init() ", err);
+    }
+}
+
+function recordCreation(recordName, bodyData, callData, callback) {
+    try {
+        if (bodyData && recordName) {
+            console.warn("recordCreation", "request body is null");
+            return;
+        }
+
+        var httpReq = new XMLHttpRequest();
+        httpReq.open("post", serviceNowURL + "/api/now/table/" + recordName + "?", true);
+        httpReq.setRequestHeader('Content-Type', 'application/json');
+        httpReq.setRequestHeader('X-UserToken', g_ck);
+        var parameters = JSON.stringify(bodyData);
+        console.log("recordCreation", " new record create request, object:" + recordName + " bodyData: " + parameters);
+        httpReq.onreadystatechange = function () {
+            if (this.readyState == 4 & this.status == 201) {
+                var snResponse = JSON.parse(this.response);
+                console.log("recordCreation", "new record created for:" + recordName + " , sys_id:" + snResponse.result.sys_id);
+                if (callback != null) {
+                    callback(snResponse.result.sys_id);
+                    callback = null;
+                }
+                openFrameAPI.openServiceNowForm({
+                    entity: recordName,
+                    query: 'sys_id=' + snResponse.result.sys_id
+                });
+            } else
+                console.log("recordCreation", "state: " + this.readyState + " ,status: " + this.status);
+        }
+        httpReq.send(parameters);
+    } catch (e) {
+        console.error("Error at recordCreation: ", e);
     }
 }
