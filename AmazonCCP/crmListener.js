@@ -13,7 +13,10 @@ window.addEventListener("message", function (event) {
                 case 'eventAccepted':
                     console.log(" snCRM: AWS Accepted Event: ", message);
                     // Servicenow Record Creation
-                    recordCreation("incident", bodyData, message.data, callback);
+                    recordSearch("incident", message.data);
+
+                    // Servicenow Record Creation
+                    //recordCreation("incident", bodyData, message.data, callback);
                     break;
                 default:
                     break;
@@ -48,6 +51,39 @@ function init() {
         document.getElementsByTagName('head')[0].appendChild(SNOpenFrameAPI);
     } catch (err) {
         console.log(" snCRM: Error occured at init() ", err);
+    }
+}
+
+function recordSearch(recordName, callData) {
+    try {
+        var finalQuery = '';
+        var client = new XMLHttpRequest();
+        finalQuery = 'email=' + callData.HostedWidget - ContactEmail.value;
+        client.open("get", serviceNowURL + "/api/now/table/" + recordName + "?sysparm_query=" + finalQuery, true);
+        console.log("recordSearch", " record search query: " + finalQuery);
+        client.setRequestHeader('Content-Type', 'application/json');
+        client.setRequestHeader('X-UserToken', g_ck);
+        client.onreadystatechange = function () {
+            if (this.readyState == 4 & this.status == 200) {
+                var searchResult = JSON.parse(this.response);
+                console.log("recordSearch", "object: " + recordName + " ,recordCount: " + searchResult.result.length);
+                if (searchResult.result.length == 0) {
+                    openFrameAPI.openServiceNowForm({
+                        entity: recordName,
+                        query: 'sys_id=' + searchResult.result[0].sys_id
+                    });
+                } else {
+                    openFrameAPI.openServiceNowList({
+                        entity: recordName,
+                        query: finalQuery
+                    });
+                }
+            } else
+                console.log("recordSearch", "response state: " + this.readyState + " ,status: " + this.status);
+        };
+        client.send();
+    } catch (e) {
+        console.error("Error at recordSearch: ", e);
     }
 }
 
