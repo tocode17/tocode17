@@ -67,7 +67,7 @@ function recordSearch(recordName, callData) {
             if (this.readyState == 4 & this.status == 200) {
                 var searchResult = JSON.parse(this.response);
                 console.log("recordSearch", "object: " + recordName + " ,recordCount: " + searchResult.result.length);
-                if (searchResult.result.length == 0) {
+                if (searchResult.result.length == 1) {
                     openFrameAPI.openServiceNowForm({
                         entity: recordName,
                         query: 'sys_id=' + searchResult.result[0].sys_id

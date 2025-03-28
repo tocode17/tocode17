@@ -1,72 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LivePerson Custom Widget</title>
-	<script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js" type="text/javascript"></script>
+    <script src="https://lpcdn.lpsnmedia.net/webagent/client-SDK.min.js"></script>
+    <script src="amazon-connect.min.js"></script>
+    <style>
+        *,
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        iframe {
+            border: 0px
+        }
+
+        #container-div {
+            width: 400px;
+            height: 600px
+        }
+    </style>
 </head>
-<body>
- 
-    <h2>LivePerson Custom Widget</h2>
-    <div id="conversation"></div>
- 
+
+<body onload="initSDKs()">
+    <div id="container-div" allow="microphone"></div>
     <script>
-        // Ensure lpTag is available
-        window.lpTag = window.lpTag || {};
-        lpTag.agentSDK = lpTag.agentSDK || new window.lpTag.AgentSDK();
- 
-        // Subscribe to Agent Conversations
-        function subscribeToAgentConversations() {
+        function changeAgentStatus(newStatus) {
+            try {
+                lpTag.agentSDK.command(
+                    'agent.setStatus', {
+                        availability: {
+                            "chat": "Online"
+                        }
+                    },
+                    (data) => console.log('Status updated successfully:', data),
+                    (err) => console.error('Error updating status:', err)
+                );
+            } catch (erro) {
+                console.error('Error at changeAgentStatus: ', erro);
+            }
 
-        //     const agentSDK = lpTag.agentSDK;
-			
-		// 	agentSDK.init({});
+        }
 
-        //     // Subscribe to real-time conversation updates
-        //     agentSDK.bind(
-        //         {
-        //             type: 'routing.agentUserSession',
-        //             skillId: '*', // Subscribe to all skills (use specific IDs if needed)
-        //         },
-        //         (data) => {
-        //             console.log("Conversation Data:", data);
-        //             document.getElementById("conversation").innerText = JSON.stringify(data, null, 2);
-        //         },
-        //         (error) => {
-        //             console.error("Subscription Error:", error);
-        //         }
-        //     );
-        
-				const ws = new WebSocket('wss://z1.le.liveperson.net/ws/api/account/48507146/messaging/consumer?v=3');
-				
-				ws.on('open', function open() {
-				const subscribeMessage = {
-					kind: 'req',
-					id: '1',
-					type: 'subscribe',
-					body: {
-					dialogId: '12345',
-					endpoint: 'routing.agentUserSession'
-					}
-				};
-				ws.send(JSON.stringify(subscribeMessage));
-				});
-				
-				ws.on('message', function incoming(data) {
-				console.log('Received:', data);
-				});
-				
-				ws.on('error', function error(err) {
-				console.error('WebSocket error:', err);
-				});
-	}
- 
-        // Initialize and subscribe
-        document.addEventListener("DOMContentLoaded", function() {
-            subscribeToAgentConversations();
-        });
+        function initSDKs() {
+            //AWS SDK
+            try {
+                var instanceBase = "https://ccaa-aws-connect-sandbox.my.connect.aws";
+                var instanceURL = instanceBase + "/ccp-v2/";
+                var instanceLogin = instanceBase + "/login";
+
+                var containerDiv = document.getElementById("container-div");
+
+                connect.core.initCCP(containerDiv, {
+                    ccpUrl: instanceURL,
+                    loginPopup: true,
+                    loginPopupAutoClose: true,
+                    loginUrl: instanceLogin,
+                    softphone: {
+                        allowFramedSoftphone: true,
+                        allowMicAccess: true
+                    }
+                });
+
+                connect.contact(function (contact) {
+
+                    contact.onConnecting(function (contact) {
+                        window.parent.postMessage({
+                            type: 'eventRinging',
+                            data: contact.getAttributes()
+                        }, '*');
+                    });
+
+                    contact.onConnected(function (contact) {
+                        console.log("Optum: Recevied onConnected from Amazon connect, Data: ",
+                            JSON
+                            .stringify(contact));
+                        window.parent.postMessage({
+                            type: 'eventAccepted',
+                            data: contact.getAttributes()
+                        }, '*');
+
+
+
+                        // var attributeMap = contact.getAttributes();
+                        // var baseURL =
+                        //     "https://dev240867.service-now.com/incident.do?sys_id=-1&sysparm_query=";
+                        // //var searchString = attributeMap.screenPopValue.value;
+                        // //var screenpopURL = baseURL + searchString +"/view";
+                        // //window.open(screenpopURL)
+                        // window.open(baseURL +
+                        //     "caller_id=77ad8176731313005754660c4cf6a7de^short_description=Password Reset^description=I want to reset my laptop password",
+                        //     '_blank')
+                        // console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: " +
+                        //     screenpopURL);
+                    });
+                });
+            } catch (awsError) {
+                console.error("Error at AWS SDK: ", awsError);
+            }
+        }
     </script>
- 
 </body>
+
 </html>
