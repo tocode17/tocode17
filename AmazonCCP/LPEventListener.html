@@ -27,26 +27,7 @@
     <script>
         function agentInfoHandler(state) {
             try {
-                // Get the current agent status
-                lpTag.agentSDK.getAgentState(function (state) {
-                    console.log("Current agent status:", state);
-                }, function (error) {
-                    console.error("Error getting agent status:", error);
-                });
 
-                lpTag.agentSDK.setAgentState('ONLINE', function () {
-                    console.log("Agent status changed successfully");
-                }, function (error) {
-                    console.error("Error changing agent status:", error);
-                });
-
-                lpTag.agentSDK.getAgentInfo(function (agentInfo) {
-                    console.log("Full agent info:", agentInfo);
-                    console.log("Current status:", agentInfo.state);
-                    console.log("Current capacity:", agentInfo.capacity);
-                }, function (error) {
-                    console.error("Error getting agent info:", error);
-                });
             } catch (erro) {
                 console.error('Error at agentInfoHandler: ', erro);
             }
@@ -110,36 +91,11 @@
 
                 window.lpTag = window.lpTag || {};
 
-                function checkAgentStatus() {
-                    if (window.lpTag.taglets && window.lpTag.taglets.rendererStub) {
-                        window.lpTag.taglets.rendererStub.getEngagementDetails((data) => {
-                            console.log("Agent Status Data:", data);
-                            if (data && data.engagements && data.engagements.length > 0) {
-                                console.log("Agent is available");
-                            } else {
-                                console.log("No agents available");
-                            }
-                        });
-                    } else {
-                        console.log("LivePerson SDK not fully loaded yet.");
-                    }
-                }
-
                 if (lpTag.agentSDK != undefined) {
                     console.log("LP agentSDK initialized !!");
                     lpTag.agentSDK.bind('chatInfo.rtSessionId', lpEventReceiver, lpErrorHandler);
                     lpTag.agentSDK.bind('agentInfo.maxChats', lpEventReceiver, lpErrorHandler);
-                    //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler);
-                    // Listen for agent state changes
-                    lpTag.agentSDK.bind("lpUnifiedWindow", "state", function (data) {
-                        console.log("Agent state changed:", data);
-                        // Handle the state change in your widget
-                    });
-
-                    lpTag.agentSDK.on('state', function (data) {
-                        console.log("Agent status changed to:", data.state);
-                        console.log("Additional state info:", data);
-                    });
+                    //lpTag.agentSDK.bind('conversation', lpEventReceiver, lpErrorHandler); *to get all conv info*                   
                 }
 
             } catch (lpError) {
@@ -192,7 +148,7 @@
                                 alert("Current AgentID is: ", currentAgentID);
                             } else {
                                 console.log("Current AgentID is: ", currentAgentID);
-                                agentInfoHandler('ONLINE');
+                                //agentInfoHandler('ONLINE');
                             }
                         }
                     });

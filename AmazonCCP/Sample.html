@@ -53,6 +53,21 @@
             );
         }
 
+        function checkAgentStatus() {
+            if (window.lpTag.taglets && window.lpTag.taglets.rendererStub) {
+                window.lpTag.taglets.rendererStub.getEngagementDetails((data) => {
+                    console.log("Agent Status Data:", data);
+                    if (data && data.engagements && data.engagements.length > 0) {
+                        console.log("Agent is available");
+                    } else {
+                        console.log("No agents available");
+                    }
+                });
+            } else {
+                console.log("LivePerson SDK not fully loaded yet.");
+            }
+        }
+
         function changeAgentStatus(newStatus) {
             try {
                 lpTag.agentSDK.command(
@@ -160,12 +175,25 @@
                 lpTag.agentSDK.bind('agentInfo.employeeId', lpEventReceiver, lpErrorHandler);
                 lpTag.agentSDK.bind('agentInfo.sessionId', lpEventReceiver, lpErrorHandler);
 
+                // Listen for agent state changes
+                lpTag.agentSDK.bind("lpUnifiedWindow", "state", function (data) {
+                    console.log("Agent state changed:", data);
+                    // Handle the state change in your widget
+                });
+
+                lpTag.agentSDK.on('state', function (data) {
+                    console.log("Agent status changed to:", data.state);
+                    console.log("Additional state info:", data);
+                });
+
                 navigator.mediaDevices.enumerateDevices()
                     .then(function (devices) {
                         const audioInputDevices = devices.filter(device => device.kind === 'audioinput');
                         console.log('Available microphones:', audioInputDevices);
 
                     });
+
+
             } catch (error) {
                 console.error("Error at initSDK: ", error);
             }
