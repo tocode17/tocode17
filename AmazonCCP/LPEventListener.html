@@ -25,19 +25,30 @@
 <body onload="initSDKs()">
     <div id="container-div" allow="microphone"></div>
     <script>
-        function changeAgentStatus(newStatus) {
+        function agentInfoHandler(state) {
             try {
-                lpTag.agentSDK.command(
-                    'agent.setStatus', {
-                        availability: {
-                            "chat": "Online"
-                        }
-                    },
-                    (data) => console.log('Status updated successfully:', data),
-                    (err) => console.error('Error updating status:', err)
-                );
+                // Get the current agent status
+                lpTag.agentSDK.getAgentState(function (state) {
+                    console.log("Current agent status:", state);
+                }, function (error) {
+                    console.error("Error getting agent status:", error);
+                });
+
+                lpTag.agentSDK.setAgentState('ONLINE', function () {
+                    console.log("Agent status changed successfully");
+                }, function (error) {
+                    console.error("Error changing agent status:", error);
+                });
+
+                lpTag.agentSDK.getAgentInfo(function (agentInfo) {
+                    console.log("Full agent info:", agentInfo);
+                    console.log("Current status:", agentInfo.state);
+                    console.log("Current capacity:", agentInfo.capacity);
+                }, function (error) {
+                    console.error("Error getting agent info:", error);
+                });
             } catch (erro) {
-                console.error('Error at changeAgentStatus: ', erro);
+                console.error('Error at agentInfoHandler: ', erro);
             }
 
         }
@@ -123,7 +134,12 @@
                     lpTag.agentSDK.bind("lpUnifiedWindow", "state", function (data) {
                         console.log("Agent state changed:", data);
                         // Handle the state change in your widget
-                    })
+                    });
+
+                    lpTag.agentSDK.on('state', function (data) {
+                        console.log("Agent status changed to:", data.state);
+                        console.log("Additional state info:", data);
+                    });
                 }
 
             } catch (lpError) {
@@ -176,23 +192,9 @@
                                 alert("Current AgentID is: ", currentAgentID);
                             } else {
                                 console.log("Current AgentID is: ", currentAgentID);
-                                changeAgentStatus('ONLINE');
+                                agentInfoHandler('ONLINE');
                             }
                         }
-
-
-
-                        // var attributeMap = contact.getAttributes();
-                        // var baseURL =
-                        //     "https://dev240867.service-now.com/incident.do?sys_id=-1&sysparm_query=";
-                        // //var searchString = attributeMap.screenPopValue.value;
-                        // //var screenpopURL = baseURL + searchString +"/view";
-                        // //window.open(screenpopURL)
-                        // window.open(baseURL +
-                        //     "caller_id=77ad8176731313005754660c4cf6a7de^short_description=Password Reset^description=I want to reset my laptop password",
-                        //     '_blank')
-                        // console.log("Optum: Servicenow Screenpopup from Amazon connect, URL: " +
-                        //     screenpopURL);
                     });
                 });
             } catch (awsError) {

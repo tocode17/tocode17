@@ -62,6 +62,35 @@
                     (data) => console.log('Status updated successfully:', data),
                     (err) => console.error('Error updating status:', err)
                 );
+
+                // Get the current agent status
+                lpTag.agentSDK.getAgentState(function (state) {
+                    console.log("Current agent status:", state);
+                }, function (error) {
+                    console.error("Error getting agent status:", error);
+                });
+
+
+                lpTag.agentSDK.on('state', function (data) {
+                    console.log("Agent status changed to:", data.state);
+                    console.log("Additional state info:", data);
+                });
+
+
+                lpTag.agentSDK.setAgentState('ONLINE', function () {
+                    console.log("Agent status changed successfully");
+                }, function (error) {
+                    console.error("Error changing agent status:", error);
+                });
+
+                lpTag.agentSDK.getAgentInfo(function (agentInfo) {
+                    console.log("Full agent info:", agentInfo);
+                    console.log("Current status:", agentInfo.state);
+                    console.log("Current capacity:", agentInfo.capacity);
+                }, function (error) {
+                    console.error("Error getting agent info:", error);
+                });
+
             } catch (erro) {
                 console.error('Error at changeAgentStatus: ', erro);
             }
